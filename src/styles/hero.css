@@ -1,0 +1,22 @@
+.hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 40px;
+    background-color: var(--light-blue); /* Latar belakang light blue */
+  }
+  
+  .hero-content h1 span {
+    color: var(--light-purple); /* Warna light purple untuk teks */
+  }
+  
+  .view-pets-btn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: var(--light-pink); /* Tombol light pink */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  

@@ -1,0 +1,18 @@
+.statistics {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px 40px;
+    background-color: var(--cream); /* Latar belakang cream */
+  }
+  
+  .stat-number {
+    font-size: 36px;
+    font-weight: bold;
+    color: var(--light-blue); /* Gunakan warna light blue */
+  }
+  
+  .stat-label {
+    font-size: 16px;
+    color: var(--text-color);
+  }
+  

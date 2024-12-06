@@ -1,0 +1,50 @@
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 40px;
+  background-color: var(--light-blue); /* Latar belakang light blue */
+}
+
+.hero-content {
+  flex: 1;
+  max-width: 600px;
+}
+
+.hero-content h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.hero-content h1 span {
+  color: var(--light-purple); /* Warna light purple untuk teks */
+}
+
+.hero-content p {
+  font-size: 1rem;
+  color: #555;
+}
+
+.view-pets-btn {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: var(--light-pink); /* Tombol light pink */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.hero-image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-image img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}

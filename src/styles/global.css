@@ -1,0 +1,47 @@
+:root {
+    --light-blue: #BFECFF;
+    --light-purple: #CDC1FF;
+    --cream: #FFF6E3;
+    --light-pink: #FFCCEA;
+    --text-color: #333; /* Tambahan untuk teks */
+  }
+  
+  body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: var(--cream); /* Gunakan warna cream sebagai latar belakang utama */
+    color: var(--text-color);
+  }
+  /* Warna untuk card border */
+.border-lightblue {
+  border-color: #BFECFF !important;
+}
+
+.border-lightpurple {
+  border-color: #CDC1FF !important;
+}
+
+.border-cream {
+  border-color: #FFF6E3 !important;
+}
+
+.border-lightpink {
+  border-color: #FFCCEA !important;
+}
+
+/* Warna background card header */
+.bg-lightblue {
+  background-color: #BFECFF !important;
+}
+
+.bg-lightpurple {
+  background-color: #CDC1FF !important;
+}
+
+.bg-cream {
+  background-color: #FFF6E3 !important;
+}
+
+.bg-lightpink {
+  background-color: #FFCCEA !important;
+}

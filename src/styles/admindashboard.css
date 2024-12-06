@@ -1,0 +1,28 @@
+.admin-dashboard {
+  padding: 100px;
+  background-color: #f4f4f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  background-image: url('../assets/images/kucang.png');
+  background-position: center bottom; /* Gambar akan muncul di bawah tengah */
+  background-repeat: no-repeat;
+  background-size: contain; /* Ukuran gambar akan disesuaikan agar pas */
+}
+
+.admin-dashboard h2 {
+  color: white;
+  font-size: 24px;
+}
+
+.admin-dashboard button {
+  padding: 10px 20px;
+  background-color: #ffccea;
+  border: none;
+  color: white;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.admin-dashboard button:hover {
+  background-color: #f8b3d3;
+}
