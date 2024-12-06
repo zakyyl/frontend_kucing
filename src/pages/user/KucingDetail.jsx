@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import axios from 'axios';
 import "../../styles/kucingdetail.css";
 
@@ -10,6 +11,8 @@ const KucingDetail = () => {
   const [kondisiRumah, setKondisiRumah] = useState("");
   const [pengalaman, setPengalaman] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null); // Menambahkan state error
+  const id_pengguna = useSelector(state => state.auth.id); // Perbaikan: Ambil id pengguna yang benar
 
   useEffect(() => {
     const fetchKucing = async () => {
@@ -22,17 +25,28 @@ const KucingDetail = () => {
         }
       } catch (error) {
         console.error('Error fetching kucing detail:', error);
+        setError('Error fetching data.');
       }
     };
-    fetchKucing();
+
+    if (id) {
+      fetchKucing();
+    }
   }, [id]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setError(null); // Reset error saat form dikirim
+
+    if (!id_pengguna) {
+      setError("ID pengguna tidak ditemukan. Pastikan Anda sudah login.");
+      setLoading(false);
+      return;
+    }
+
     try {
-      const id_pengguna = 1; // Ganti dengan ID pengguna yang sedang login
-      const status_pengajuan = "pending";
+      const status_pengajuan = "pending"; // Status pengajuan adopsi
 
       const response = await axios.post("http://localhost:3001/api/v1/pengajuan", {
         id_kucing: id,
@@ -50,11 +64,15 @@ const KucingDetail = () => {
       setPengalaman("");
     } catch (error) {
       console.error("Error creating pengajuan:", error);
-      alert("Gagal membuat pengajuan.");
+      setError("Gagal membuat pengajuan.");
     } finally {
       setLoading(false);
     }
   };
+
+  if (error) {
+    return <div className="error-message">{error}</div>; // Menampilkan pesan error jika ada
+  }
 
   if (!kucing) {
     return <div>Loading...</div>;

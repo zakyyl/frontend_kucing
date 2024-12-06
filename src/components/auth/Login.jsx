@@ -1,23 +1,23 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux"; // Menggunakan dispatch dari Redux
-import { login } from "../../redux/authSlice"; // Menggunakan action login
-import { useNavigate } from "react-router-dom"; // Untuk navigasi
-import axios from "axios"; // Menggunakan axios untuk request API
-import "../../styles/auth.css"; // Mengimpor styling
+import { useDispatch } from "react-redux"; 
+import { login } from "../../redux/authSlice"; 
+import { useNavigate } from "react-router-dom"; 
+import axios from "axios"; 
+import { jwtDecode } from 'jwt-decode';  // Menggunakan ekspor yang benar
+import "../../styles/auth.css"; 
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(""); // Untuk menampilkan error
-  const [success, setSuccess] = useState(""); // Untuk menampilkan pesan sukses
+  const [error, setError] = useState(""); 
+  const [success, setSuccess] = useState(""); 
   const dispatch = useDispatch();
-  const navigate = useNavigate(); // Mendapatkan fungsi navigate
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
   
     try {
-      // Tentukan endpoint berdasarkan domain email
       const endpoint =
         email.endsWith("@admin.com")
           ? "http://localhost:3001/api/auth/admin/login"
@@ -25,36 +25,36 @@ const Login = () => {
   
       const response = await axios.post(endpoint, { email, password });
   
-      // Jika berhasil login
-      setSuccess(response.data.message); // Tampilkan pesan sukses
-      setError(""); // Hapus pesan error jika ada
+      setSuccess(response.data.message); 
+      setError(""); 
   
-      // Simpan token JWT di localStorage dan Redux
-      localStorage.setItem("token", response.data.token);
+      const token = response.data.token;
+      localStorage.setItem("token", token);
       localStorage.setItem("role", email.endsWith("@admin.com") ? "admin" : "user");
-  
+      
+      // Decode token untuk mendapatkan ID
+      const decoded = jwtDecode(token);  // Gunakan jwtDecode, bukan jwt_decode
+      const userId = decoded.id; // Mengambil ID dari token yang didekodekan
+
+      // Dispatch ke Redux dengan token dan ID
       dispatch(
         login({
-          token: response.data.token,
+          token,
           role: email.endsWith("@admin.com") ? "admin" : "user",
+          id: userId,  // Mengirimkan ID pengguna
         })
       );
   
-      // Verifikasi bahwa token sudah tersimpan dan navigasi dipanggil
       console.log("Token stored:", localStorage.getItem("token"));
   
-      // Redirect sesuai role setelah login
       if (email.endsWith("@admin.com")) {
-        console.log("Redirecting to admin dashboard...");
-        navigate("/admin/dashboard"); // Redirect ke admin dashboard
+        navigate("/admin/dashboard");
       } else {
-        console.log("Redirecting to user dashboard...");
-        navigate("/user/dashboard"); // Redirect ke user dashboard
+        navigate("/user/dashboard");
       }
     } catch (err) {
-      // Tampilkan pesan error jika login gagal
       setError(err.response?.data?.message || "Login failed");
-      setSuccess(""); // Hapus pesan sukses jika ada
+      setSuccess("");
     }
   };
 
