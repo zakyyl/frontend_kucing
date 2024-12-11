@@ -3,14 +3,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../redux/authSlice";
 import { useNavigate } from "react-router-dom";
 
-const Header = () => {
-  const { isLoggedIn, role } = useSelector((state) => state.auth); // Mengakses state auth
+const HeaderAdmin = () => {
+  const { isLoggedIn, role } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    dispatch(logout()); // Dispatch logout action
-    navigate("/"); // Arahkan ke halaman utama
+    dispatch(logout());
+    navigate("/");
   };
 
   return (
@@ -19,9 +19,9 @@ const Header = () => {
         {/* Logo */}
         <div
           className="text-2xl font-bold text-lightPurple cursor-pointer hover:text-lightPink transition duration-300"
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/admin/dashboard")}
         >
-          Pawfect Shelter
+          Admin Panel
         </div>
 
         {/* Navigation Links */}
@@ -29,36 +29,42 @@ const Header = () => {
           <ul className="flex space-x-6 text-gray-800 font-medium">
             <li>
               <a
-                href="/"
+                href="/admin/dashboard"
                 className="hover:text-lightPurple transition duration-300"
               >
-                Home
+                Dashboard
               </a>
             </li>
             <li>
-  <a
-    href="/about-us"
-    className="hover:text-lightPurple transition duration-300"
-  >
-    About Us
-  </a>
-</li>
-<li>
-  <a
-    href="/articles"
-    className="hover:text-lightPurple transition duration-300"
-  >
-    Article
-  </a>
-</li>
-            <li>
-              <a href="/faq" className="hover:text-lightPurple transition duration-300">
-                FAQ
+              <a
+                href="/tabel/kucing"
+                className="hover:text-lightPurple transition duration-300"
+              >
+                Tabel Kucing
               </a>
             </li>
             <li>
-              <a href="/contact" className="hover:text-lightPurple transition duration-300">
-                Contact
+              <a
+                href="/tabel/pengguna"
+                className="hover:text-lightPurple transition duration-300"
+              >
+                Tabel Pengguna
+              </a>
+            </li>
+            <li>
+              <a
+                href="/tabel/adopsi"
+                className="hover:text-lightPurple transition duration-300"
+              >
+                Tabel Adopsi
+              </a>
+            </li>
+            <li>
+              <a
+                href="/tabel/pengajuan"
+                className="hover:text-lightPurple transition duration-300"
+              >
+                Tabel Pengajuan
               </a>
             </li>
           </ul>
@@ -81,20 +87,12 @@ const Header = () => {
               </button>
             </>
           ) : (
-            <>
-              <button
-                onClick={() => navigate("/login")}
-                className="px-4 py-2 bg-lightPink text-white font-medium rounded-md shadow-md hover:bg-pink-500 transition duration-300"
-              >
-                Login
-              </button>
-              <button
-                onClick={() => navigate("/register")}
-                className="px-4 py-2 bg-lightPurple text-white font-medium rounded-md shadow-md hover:bg-purple-500 transition duration-300"
-              >
-                Sign Up
-              </button>
-            </>
+            <button
+              onClick={() => navigate("/login")}
+              className="px-4 py-2 bg-lightPink text-white font-medium rounded-md shadow-md hover:bg-pink-500 transition duration-300"
+            >
+              Login
+            </button>
           )}
         </div>
       </div>
@@ -102,4 +100,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default HeaderAdmin;

@@ -32,49 +32,55 @@ const TabelPengguna = () => {
   };
 
   return (
-    <div className="container mt-5">
-      <h2>Data Pengguna</h2>
+    <div className="container mx-auto px-4 py-8">
+      <h2 className="text-3xl font-bold text-center text-pink-500 mb-6">Data Pengguna</h2>
 
-      {editSuccess && <div className="alert alert-success">Data pengguna berhasil diperbarui!</div>}
+      {editSuccess && (
+        <div className="alert alert-success bg-green-100 text-green-700 p-4 rounded-lg mb-4">
+          <span className="font-semibold">Data pengguna berhasil diperbarui!</span>
+        </div>
+      )}
 
       {penggunaData && penggunaData.length > 0 ? (
-        <table className="table table-bordered">
-          <thead>
-            <tr>
-              <th>Nama</th>
-              <th>Email</th>
-              <th>No Telepon</th>
-              <th>Alamat</th>
-              <th>Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            {penggunaData.map((pengguna) => (
-              <tr key={pengguna.id}>
-                <td>{pengguna.nama}</td>
-                <td>{pengguna.email}</td>
-                <td>{pengguna.no_telepon}</td>
-                <td>{pengguna.alamat}</td>
-                <td>
-                  <button
-                    className="btn btn-warning mr-2"
-                    onClick={() => handleEdit(pengguna.id)}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    className="btn btn-danger"
-                    onClick={() => handleDelete(pengguna.id)}
-                  >
-                    Delete
-                  </button>
-                </td>
+        <div className="overflow-x-auto rounded-lg shadow-lg">
+          <table className="table-auto w-full bg-white rounded-lg border border-gray-200 shadow-md">
+            <thead>
+              <tr>
+                <th className="px-6 py-3 text-sm font-semibold text-left text-purple-600">Nama</th>
+                <th className="px-6 py-3 text-sm font-semibold text-left text-purple-600">Email</th>
+                <th className="px-6 py-3 text-sm font-semibold text-left text-purple-600">No Telepon</th>
+                <th className="px-6 py-3 text-sm font-semibold text-left text-purple-600">Alamat</th>
+                <th className="px-6 py-3 text-sm font-semibold text-center text-purple-600">Aksi</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {penggunaData.map((pengguna) => (
+                <tr key={pengguna.id} className="border-t border-gray-200">
+                  <td className="px-6 py-4 text-sm text-gray-800">{pengguna.nama}</td>
+                  <td className="px-6 py-4 text-sm text-gray-800">{pengguna.email}</td>
+                  <td className="px-6 py-4 text-sm text-gray-800">{pengguna.no_telepon}</td>
+                  <td className="px-6 py-4 text-sm text-gray-800">{pengguna.alamat}</td>
+                  <td className="px-6 py-4 text-center">
+                    <button
+                      className="px-4 py-2 bg-yellow-400 text-white rounded-full hover:bg-yellow-500 transition duration-300 mr-2"
+                      onClick={() => handleEdit(pengguna.id)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="px-4 py-2 bg-red-400 text-white rounded-full hover:bg-red-500 transition duration-300"
+                      onClick={() => handleDelete(pengguna.id)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       ) : (
-        <p>No data available.</p>
+        <p className="text-center text-gray-600 mt-6">Tidak ada data tersedia</p>
       )}
     </div>
   );

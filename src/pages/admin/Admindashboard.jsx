@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../api/axiosinstance';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import '../../styles/admindashboard.css';
 
 const AdminDashboard = () => {
   const { token, role } = useSelector((state) => state.auth);
@@ -13,6 +11,8 @@ const AdminDashboard = () => {
   const [penggunaData, setPenggunaData] = useState([]);
   const [adopsiData, setAdopsiData] = useState([]);
   const [pengajuanData, setPengajuanData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     if (!token || role !== 'admin') {
@@ -24,11 +24,20 @@ const AdminDashboard = () => {
 
   const fetchData = async () => {
     try {
+      setLoading(true);
+      setError('');
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
       const [kucingResponse, penggunaResponse, adopsiResponse, pengajuanResponse] = await Promise.all([
-        axiosInstance.get('/api/v1/kucing'),
-        axiosInstance.get('/api/v1/pengguna'),
-        axiosInstance.get('/api/v1/adopsi'),
-        axiosInstance.get('/api/v1/pengajuan'),
+        axiosInstance.get('/api/v1/kucing', config),
+        axiosInstance.get('/api/v1/pengguna', config),
+        axiosInstance.get('/api/v1/adopsi', config),
+        axiosInstance.get('/api/v1/pengajuan', config),
       ]);
 
       setKucingData(kucingResponse.data.data || []);
@@ -36,7 +45,13 @@ const AdminDashboard = () => {
       setAdopsiData(adopsiResponse.data.data || []);
       setPengajuanData(pengajuanResponse.data.data || []);
     } catch (error) {
+      const errorMessage =
+        error.response?.data?.message || error.message || 'Terjadi kesalahan saat mengambil data';
+
+      setError(errorMessage);
       console.error('Error fetching data:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -52,61 +67,81 @@ const AdminDashboard = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="admin-dashboard flex flex-col items-center justify-center h-screen">
+        <div className="loader border-t-4 border-pink-500 rounded-full w-16 h-16 animate-spin"></div>
+        <p className="text-pink-500 font-medium mt-4">Memuat data...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="admin-dashboard flex flex-col items-center justify-center h-screen">
+        <div className="text-red-500 text-center">
+          <p className="text-lg font-bold">Error:</p>
+          <p>{error}</p>
+          <button
+            onClick={fetchData}
+            className="mt-4 bg-pink-500 hover:bg-pink-600 text-white py-2 px-4 rounded-lg"
+          >
+            Coba Lagi
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="admin-dashboard container mt-5">
+    <div
+      className="admin-dashboard bg-gradient-to-r from-blue-50 to-pink-50 min-h-screen p-8"
+      style={{ backgroundImage: "url('../assets/images/kucang.png')", backgroundSize: '300px' }}
+    >
       {token && role === 'admin' ? (
         <>
-          <div className="h2">
-            <h2>Admin Dashboard</h2>
+          <div className="text-4xl font-bold text-center mb-8 text-purple-600">
+            🐾 Admin Dashboard 🐾
           </div>
-          <div className="row">
-            {/* Kucing Data */}
-            <div className="col-md-3">
-              <div className="card border-lightblue mb-4" onClick={() => goToTabel('kucing')}>
-                <div className="card-header bg-lightblue text-white">Data Kucing</div>
-                <div className="card-body">
-                  <h5 className="card-title">Total Kucing</h5>
-                  <p className="card-text">{kucingData.length} Kucing Terdaftar</p>
-                </div>
-              </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+            
+            <div
+              className="card bg-purple-100 p-6 rounded-lg shadow-md cursor-pointer transform hover:scale-105 transition-all text-center"
+              onClick={() => goToTabel('pengguna')}
+            >
+              <div className="text-xl font-semibold text-purple-600">Data Pengguna</div>
+              <div className="text-4xl font-bold mt-4 text-gray-700">{penggunaData.length}</div>
+              <div className="text-sm text-gray-600 mt-2">Pengguna Terdaftar</div>
             </div>
-
-            {/* Pengguna Data */}
-            <div className="col-md-3">
-              <div className="card border-lightpurple mb-4" onClick={() => goToTabel('pengguna')}>
-                <div className="card-header bg-lightpurple text-white">Data Pengguna</div>
-                <div className="card-body">
-                  <h5 className="card-title">Total Pengguna</h5>
-                  <p className="card-text">{penggunaData.length} Pengguna Terdaftar</p>
-                </div>
-              </div>
+            <div
+              className="card bg-blue-100 p-6 rounded-lg shadow-md cursor-pointer transform hover:scale-105 transition-all text-center"
+              onClick={() => goToTabel('kucing')}
+            >
+              <div className="text-xl font-semibold text-blue-600">Data Kucing</div>
+              <div className="text-4xl font-bold mt-4 text-gray-700">{kucingData.length}</div>
+              <div className="text-sm text-gray-600 mt-2">Kucing Terdaftar</div>
             </div>
-
-            {/* Adopsi Data */}
-            <div className="col-md-3">
-              <div className="card border-cream mb-4" onClick={() => goToTabel('adopsi')}>
-                <div className="card-header bg-cream text-dark">Data Adopsi</div>
-                <div className="card-body">
-                  <h5 className="card-title">Total Adopsi</h5>
-                  <p className="card-text">{adopsiData.length} Proses Adopsi</p>
-                </div>
-              </div>
+            
+            <div
+              className="card bg-pink-100 p-6 rounded-lg shadow-md cursor-pointer transform hover:scale-105 transition-all text-center"
+              onClick={() => goToTabel('pengajuan')}
+            >
+              <div className="text-xl font-semibold text-pink-600">Data Pengajuan</div>
+              <div className="text-4xl font-bold mt-4 text-gray-700">{pengajuanData.length}</div>
+              <div className="text-sm text-gray-600 mt-2">Pengajuan Masuk</div>
             </div>
-
-            {/* Pengajuan Data */}
-            <div className="col-md-3">
-              <div className="card border-lightpink mb-4" onClick={() => goToTabel('pengajuan')}>
-                <div className="card-header bg-lightpink text-white">Data Pengajuan</div>
-                <div className="card-body">
-                  <h5 className="card-title">Total Pengajuan</h5>
-                  <p className="card-text">{pengajuanData.length} Pengajuan Masuk</p>
-                </div>
-              </div>
+            <div
+              className="card bg-yellow-100 p-6 rounded-lg shadow-md cursor-pointer transform hover:scale-105 transition-all text-center"
+              onClick={() => goToTabel('adopsi')}
+            >
+              <div className="text-xl font-semibold text-yellow-600">Data Adopsi</div>
+              <div className="text-4xl font-bold mt-4 text-gray-700">{adopsiData.length}</div>
+              <div className="text-sm text-gray-600 mt-2">Proses Adopsi</div>
             </div>
           </div>
         </>
       ) : (
-        <div className="alert alert-warning text-center">
+        <div className="alert alert-warning text-center text-lg font-semibold text-yellow-700">
           <h4>Please log in as an admin to view this page.</h4>
         </div>
       )}

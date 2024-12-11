@@ -6,7 +6,7 @@ import axios from "axios";
 import { jwtDecode } from 'jwt-decode';  // Menggunakan ekspor yang benar
 import "../../styles/auth.css"; 
 
-const Login = () => {
+const LoginAdmin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(""); 
@@ -18,8 +18,8 @@ const Login = () => {
     e.preventDefault();
   
     try {
-      // Selalu menggunakan endpoint untuk login pengguna
-      const endpoint = "http://localhost:3001/api/auth/user/login";
+      // Selalu menggunakan endpoint admin
+      const endpoint = "http://localhost:3001/api/auth/admin/login";
   
       const response = await axios.post(endpoint, { email, password });
   
@@ -28,7 +28,7 @@ const Login = () => {
   
       const token = response.data.token;
       localStorage.setItem("token", token);
-      localStorage.setItem("role", "user"); // Selalu set role sebagai user
+      localStorage.setItem("role", "admin"); // Selalu set role sebagai admin
       
       // Decode token untuk mendapatkan ID
       const decoded = jwtDecode(token);  // Gunakan jwtDecode, bukan jwt_decode
@@ -38,15 +38,15 @@ const Login = () => {
       dispatch(
         login({
           token,
-          role: "user",  // Mengirimkan role sebagai user
+          role: "admin",  // Mengirimkan role sebagai admin
           id: userId,  // Mengirimkan ID pengguna
         })
       );
   
       console.log("Token stored:", localStorage.getItem("token"));
   
-      // Selalu navigasi ke dashboard pengguna
-      navigate("/user/dashboard");
+      // Selalu navigasi ke dashboard admin
+      navigate("/admin/dashboard");
     } catch (err) {
       setError(err.response?.data?.message || "Login failed");
       setSuccess("");
@@ -55,4 +55,4 @@ const Login = () => {
 
 };
 
-export default Login;
+export default LoginAdmin;
