@@ -7,7 +7,7 @@ import Swal from 'sweetalert2';
 const TabelPengguna = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { token } = useSelector((state) => state.auth); // Pastikan mengambil token dari Redux
+  const { token } = useSelector((state) => state.auth); 
   const { penggunaData: initialData } = location.state || {};
   const [penggunaData, setPenggunaData] = useState(initialData || []);
   const [searchTerm, setSearchTerm] = useState('');
@@ -32,33 +32,23 @@ const TabelPengguna = () => {
 
     if (result.isConfirmed) {
       try {
-        // Tambahkan token ke headers
         const response = await axios.delete(
           `http://localhost:3001/api/v1/pengguna/${id}`,
           {
             headers: {
-              Authorization: `Bearer ${token}` // Pastikan mengirim token
+              Authorization: `Bearer ${token}` 
             }
           }
         );
-
-        // Log response untuk debugging
         console.log('Delete Response:', response);
-
-        // Hapus data dari state lokal
         setPenggunaData(penggunaData.filter((pengguna) => pengguna.id !== id));
-
-        // Tampilkan konfirmasi berhasil dihapus
         Swal.fire(
           'Terhapus!',
           'Data pengguna berhasil dihapus.',
           'success'
         );
       } catch (error) {
-        // Log error secara detail
         console.error('Error deleting pengguna:', error.response?.data || error.message);
-
-        // Tampilkan pesan error spesifik
         Swal.fire(
           'Gagal!',
           error.response?.data?.message || 'Terjadi kesalahan saat menghapus data pengguna.',
@@ -67,8 +57,6 @@ const TabelPengguna = () => {
       }
     }
   };
-
-  // Filter data pengguna berdasarkan search term
   const filteredPenggunaData = penggunaData.filter((pengguna) =>
     pengguna.nama.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -78,8 +66,6 @@ const TabelPengguna = () => {
       <h2 className="text-3xl font-bold text-center text-pink-500 mb-6">
         👤 Data Pengguna 👤
       </h2>
-
-      {/* Input Pencarian */}
       <div className="mb-4">
         <input
           type="text"

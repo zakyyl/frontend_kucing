@@ -11,14 +11,14 @@ import {
 import Swal from 'sweetalert2';
 
 const KucingDetail = () => {
-  const { id } = useParams(); // Ambil ID dari URL
+  const { id } = useParams(); 
   const [kucing, setKucing] = useState(null);
   const [motivasi, setMotivasi] = useState('');
   const [kondisiRumah, setKondisiRumah] = useState('');
   const [pengalaman, setPengalaman] = useState('');
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null); // Menambahkan state error
-  const id_pengguna = useSelector((state) => state.auth.id); // Perbaikan: Ambil id pengguna yang benar
+  const [error, setError] = useState(null); 
+  const id_pengguna = useSelector((state) => state.auth.id); 
   const token = useSelector((state) => state.auth.token);
   const [validationErrors, setValidationErrors] = useState({});
   const navigate = useNavigate();
@@ -83,8 +83,6 @@ const KucingDetail = () => {
           },
         }
       );
-
-      // Ganti alert biasa dengan SweetAlert
       Swal.fire({
         icon: 'success',
         title: 'Pengajuan Berhasil!',
@@ -109,7 +107,6 @@ const KucingDetail = () => {
       setPengalaman('');
     } catch (error) {
       if (error.response && error.response.data.errors) {
-        // Tampilkan error validasi dengan SweetAlert
         const errorMessages = Object.values(error.response.data.errors).join('\n');
         Swal.fire({
           icon: 'error',
@@ -119,7 +116,6 @@ const KucingDetail = () => {
         });
         setValidationErrors(error.response.data.errors);
       } else {
-        // Tampilkan error umum
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
@@ -134,7 +130,7 @@ const KucingDetail = () => {
   };
 
   if (error) {
-    return <div className="text-center text-xl text-red-500">{error}</div>; // Menampilkan pesan error jika ada
+    return <div className="text-center text-xl text-red-500">{error}</div>; 
   }
 
   if (!kucing) {
@@ -144,7 +140,6 @@ const KucingDetail = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-100 to-blue-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-5xl mx-auto bg-white/80 backdrop-blur-sm rounded-3xl shadow-2xl overflow-hidden border-4 border-pink-200 p-8">
-        {/* Judul dengan dekorasi kucing */}
         <div className="relative">
           <h1 className="text-4xl font-bold text-center text-lightPurple mb-8 flex justify-center items-center gap-4">
             <FaCat className="text-pink-400 animate-wiggle" />
@@ -152,8 +147,6 @@ const KucingDetail = () => {
             <FaCat className="text-pink-400 animate-wiggle transform scale-x-[-1]" />
           </h1>
         </div>
-
-        {/* Foto Kucing dengan efek menarik */}
         <div className="flex justify-center mb-8">
           <div className="relative group">
             <img
@@ -164,8 +157,6 @@ const KucingDetail = () => {
             <div className="absolute inset-0 bg-gradient-to-t from-purple-500/30 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           </div>
         </div>
-
-        {/* Detail Kucing dengan kartu animasi */}
         <div className="grid md:grid-cols-2 gap-6 mb-8">
           <div className="bg-pink-100/50 p-6 rounded-2xl transform transition-all hover:scale-105 hover:shadow-xl">
             <h3 className="text-xl font-semibold text-lightPurple mb-4 border-b-2 border-pink-300 pb-2">
@@ -195,8 +186,6 @@ const KucingDetail = () => {
             <p className="text-gray-700 italic">{kucing.deskripsi}</p>
           </div>
         </div>
-
-        {/* Form Adopsi dengan desain menarik */}
         <form
           onSubmit={handleSubmit}
           className="bg-white/90 p-8 rounded-3xl shadow-lg border-2 border-pink-200 space-y-6"
@@ -204,8 +193,6 @@ const KucingDetail = () => {
           <h2 className="text-3xl font-bold text-center text-lightPurple mb-6 flex justify-center items-center gap-3">
             <FaHeart className="text-pink-400 animate-pulse" /> Ajukan Adopsi
           </h2>
-
-          {/* Motivasi */}
           <div className="space-y-2">
             <label className="text-gray-700 font-semibold flex items-center gap-2">
               <FaComment className="text-pink-400" /> Motivasi Adopsi
@@ -228,8 +215,6 @@ const KucingDetail = () => {
               </p>
             )}
           </div>
-
-          {/* Kondisi Rumah */}
           <div className="space-y-2">
             <label className="text-gray-700 font-semibold flex items-center gap-2">
               <FaHome className="text-purple-400" /> Kondisi Rumah
@@ -252,8 +237,6 @@ const KucingDetail = () => {
               </p>
             )}
           </div>
-
-          {/* Pengalaman Memelihara */}
           <div className="space-y-2">
             <label className="text-gray-700 font-semibold flex items-center gap-2">
               <FaPaw className="text-blue-400" /> Pengalaman Memelihara
@@ -276,7 +259,6 @@ const KucingDetail = () => {
               </p>
             )} </div>
 
-          {/* Tombol Submit */}
           <div className="flex justify-center">
             <button
               type="submit"

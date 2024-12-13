@@ -17,7 +17,6 @@ const AuthProvider = ({ children }) => {
   );
 };
 
-// Tambahkan PropTypes untuk validasi
 AuthProvider.propTypes = {
   children: PropTypes.node.isRequired,
 };

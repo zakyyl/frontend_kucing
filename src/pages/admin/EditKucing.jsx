@@ -7,9 +7,7 @@ const EditKucing = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { token } = useSelector((state) => state.auth);
-
-  // Perbaiki penggunaan useState
-  const [kucing, setKucing] = useState(null); // Tambahkan state kucing
+  const [kucing, setKucing] = useState(null); 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [formData, setFormData] = useState({
@@ -26,8 +24,7 @@ const EditKucing = () => {
       console.log('Data Kucing:', kucing);
     }
   }, [kucing]);
-  
-  // Fetch data kucing
+
   useEffect(() => {
     const fetchKucing = async () => {
       try {
@@ -42,7 +39,7 @@ const EditKucing = () => {
         );
 
         const kucingData = response.data.data;
-        setKucing(kucingData); // Gunakan setKucing dengan benar
+        setKucing(kucingData); 
         setFormData({
           nama: kucingData.nama || '',
           ras: kucingData.ras || '',
@@ -77,7 +74,6 @@ const EditKucing = () => {
   const handleChange = (e) => {
     const { name, value, files } = e.target;
 
-    // Untuk input file, gunakan files[0]
     if (name === 'foto') {
       setFormData((prevState) => ({
         ...prevState,
@@ -97,7 +93,6 @@ const EditKucing = () => {
     setError('');
 
     try {
-      // Validasi input
       const requiredFields = [
         'nama',
         'ras',
@@ -113,10 +108,7 @@ const EditKucing = () => {
           `Field berikut harus diisi: ${missingFields.join(', ')}`
         );
       }
-
       const formDataToSend = new FormData();
-
-      // Tambahkan semua field
       Object.keys(formData).forEach((key) => {
         if (formData[key] !== null && formData[key] !== undefined) {
           const value = key === 'umur' ? String(formData[key]) : formData[key];

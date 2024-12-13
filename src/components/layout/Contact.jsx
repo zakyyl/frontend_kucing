@@ -2,12 +2,11 @@ import {
   SparklesIcon,
   ChatBubbleLeftRightIcon
 } from '@heroicons/react/24/solid';
-// import { FaInstagram } from 'react-icons/fa';
+
 
 const Contact = () => {
   return (
     <section className="bg-gradient-to-br from-pink-50 to-purple-100 py-20 px-6 relative overflow-hidden">
-      {/* Cute Background Decorations */}
       <div className="absolute top-0 left-0 opacity-20 animate-bounce">
         <svg xmlns="http://www.w3.org/2000/svg" className="w-32 h-32 text-pink-200" fill="currentColor" viewBox="0 0 24 24">
           <path d="M12 2c-5.523 0-10 4.477-10 10s4.477 10 10 10 10-4.477 10-10-4.477-10-10-10zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-2-9.5c0 1.38-1.12 2.5-2.5 2.5s-2.5-1.12-2.5-2.5 1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5zm7 0c0 1.38-1.12 2.5-2.5 2.5s-2.5-1.12-2.5-2.5 1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5z" />
@@ -36,8 +35,7 @@ const Contact = () => {
           pertanyaan, saran, atau ingin berbagi cerita tentang adopsi kucing
           Anda? Hubungi kami melalui salah satu cara berikut.
         </p>
-
-        {/* Contact Form */}
+        
         <div className="bg-white/80 backdrop-blur-sm 
           rounded-2xl p-8 max-w-2xl mx-auto 
           shadow-xl hover:shadow-2xl 

@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { fetchPengajuanByUserId } from '../../redux/pengajuanSlice';
-import catDashboard from '../../assets/images/pawfet.png'; // Gambar kucing utama
-import catWaving from '../../assets/images/cat-waving.gif'; // Gif kucing melambaikan tangan
+import catDashboard from '../../assets/images/pawfet.png'; 
+import catWaving from '../../assets/images/cat-waving.gif'; 
 
 const UserDashboard = () => {
   const dispatch = useDispatch();
@@ -18,8 +18,6 @@ const UserDashboard = () => {
   const closeModal = () => {
     setSelectedPengajuan(null);
   };
-
-  // Ambil token dan data dari localStorage
   const token = localStorage.getItem('token');
   const role = localStorage.getItem('role');
   const id = localStorage.getItem('id');
@@ -27,7 +25,6 @@ const UserDashboard = () => {
   const pengajuan = useSelector((state) => state.pengajuan);
 
   useEffect(() => {
-    // Tentukan waktu hari
     const currentHour = new Date().getHours();
     if (currentHour < 12) setTimeOfDay('Pagi');
     else if (currentHour < 18) setTimeOfDay('Siang');
@@ -51,7 +48,6 @@ const UserDashboard = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-100 via-purple-100 to-blue-100 p-6">
       <div className="container mx-auto">
-        {/* Header Dashboard */}
         <div className="text-center mb-8">
           <div>
             <h1 className="text-4xl font-['Comfortaa'] font-bold text-lightPurple flex justify-center items-center gap-3">
@@ -80,9 +76,7 @@ const UserDashboard = () => {
             </button>
           </div>
         </div>
-        {/* Konten Utama dengan Gambar Kucing di Tengah */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
-          {/* Kartu Informasi Kiri */}
           <div className="bg-white/80 backdrop-blur-md rounded-3xl p-6 shadow-xl">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-2xl font-bold text-lightPurple">
@@ -113,8 +107,6 @@ const UserDashboard = () => {
               </div>
             </div>
           </div>
-
-          {/* Gambar Kucing di Tengah */}
           <div className="flex justify-center">
             <img
               src={catDashboard}
@@ -122,8 +114,6 @@ const UserDashboard = () => {
               className="w-full max-w-md object-cover hover:scale-105 transition-transform"
             />
           </div>
-
-          {/* Kartu Pengajuan Kanan */}
           <div className="bg-white/80 backdrop-blur-md rounded-3xl p-6 shadow-xl">
             <h2 className="text-2xl font-bold text-lightPurple mb-4">
               Daftar Pengajuan Adopsi 🏠
@@ -184,7 +174,6 @@ const UserDashboard = () => {
               </div>
             )}
           </div>
-          {/* Modal Detail Pengajuan */}
           {selectedPengajuan && (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
               <div className="bg-white rounded-2xl max-w-md w-full p-8 relative">
@@ -200,7 +189,6 @@ const UserDashboard = () => {
                 </h2>
 
                 <div className="space-y-4">
-                  {/* Foto Kucing */}
                   <div className="flex justify-center mb-4">
                     <img
                       src={
@@ -212,8 +200,6 @@ const UserDashboard = () => {
                       className="w-48 h-48 object-contain bg-white rounded-full border-4 border-pink-200"
                     />
                   </div>
-
-                  {/* Informasi Pengajuan */}
                   <div className="bg-pink-50 rounded-xl p-4">
                     <h3 className="text-xl font-semibold text-gray-800">
                       {selectedPengajuan.Kucing.nama}
@@ -237,8 +223,6 @@ const UserDashboard = () => {
                     <p><strong>Tanggal Pengajuan:</strong> {new Date(selectedPengajuan.createdAt).toLocaleDateString()}</p>
                     <p><strong>Alasan Adopsi:</strong> {selectedPengajuan.motivasi || 'Tidak ada keterangan'}</p>
                   </div>
-
-                  {/* Informasi Kucing */}
                 </div>
               </div>
             </div>

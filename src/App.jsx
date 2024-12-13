@@ -11,7 +11,6 @@ import LoginWeb from './components/auth/loginWeb';
 import Register from './components/auth/Register';
 import ProtectedRoute from './components/ProtectedRoute';
 
-// Import komponen dashboard admin dan user
 import AdminDashboard from './pages/admin/Admindashboard';
 import UserDashboard from './pages/user/Userdashboard';
 
@@ -26,33 +25,28 @@ import AddKucing from './pages/admin/AddKucing';
 import KucingList from './pages/user/KucingList';
 import KucingDetail from './pages/user/KucingDetail';
 import EditProfile from './pages/user/EditProfile';
-// import Unauthorized from "./pages/Unauthorized";
+
 import AboutUs from './components/layout/AboutUs';
 import Article from './components/layout/Article';
 import FAQ from './components/layout/Faq';
 import Contact from './components/layout/Contact';
 
 
-// import './styles/global.css';
 
 const App = () => {
   return (
     <Router>
       <Header />
       <Routes>
-        {/* Landing Page sebagai halaman utama */}
         <Route path="/" element={<LandingPage />} />        
         <Route path="/about-us" element={<AboutUs />} />
         <Route path="/articles" element={<Article />} />
         <Route path="/faq" element={<FAQ />} />
         <Route path="/contact" element={<Contact />} />
 
-        {/* Autentikasi */}
         <Route path="/login" element={<LoginWeb />} />
         <Route path="/register" element={<Register />} />
 
-        {/* Rute Admin */}
-        {/* Rute Admin - Hanya bisa diakses admin */}
         <Route
           path="/admin/dashboard"
           element={
@@ -126,7 +120,6 @@ const App = () => {
           }
         />
 
-        {/* Rute User - Hanya bisa diakses user */}
         <Route
           path="/user/dashboard"
           element={
@@ -160,7 +153,7 @@ const App = () => {
           }
         />
 
-        {/* Redirect untuk rute tidak ditemukan */}
+        
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
       <Footer />

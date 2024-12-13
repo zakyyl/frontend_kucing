@@ -1,12 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-
-// Thunk untuk fetch pengajuan berdasarkan ID pengguna
 export const fetchPengajuanByUserId = createAsyncThunk(
   'pengajuan/fetchPengajuanByUserId',
   async (userId, { rejectWithValue }) => {
     try {
-      // Ambil token dari localStorage
       const token = localStorage.getItem('token');
 
       if (!token) {
@@ -17,11 +14,11 @@ export const fetchPengajuanByUserId = createAsyncThunk(
         `http://localhost:3001/api/v1/pengajuan/user/${userId}`,
         {
           headers: {
-            Authorization: `Bearer ${token}`, // Pastikan format Bearer
+            Authorization: `Bearer ${token}`, 
           },
         }
       );
-      return response.data.data; // Pastikan ini sesuai dengan struktur data respons
+      return response.data.data; 
     } catch (error) {
       return rejectWithValue(
         error.response?.data?.message ||
@@ -36,7 +33,7 @@ const pengajuanSlice = createSlice({
   name: 'pengajuan',
   initialState: {
     data: [],
-    status: 'idle', // idle | loading | succeeded | failed
+    status: 'idle',
     error: null,
   },
   reducers: {},

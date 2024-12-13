@@ -19,7 +19,7 @@ const persistConfig = {
   key: 'root',
   version: 1,
   storage,
-  whitelist: ['auth', 'pengajuan'] // reducer yang ingin di-persist
+  whitelist: ['auth', 'pengajuan'] 
 };
 
 const persistedReducer = persistReducer(persistConfig, 

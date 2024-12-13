@@ -25,7 +25,6 @@ const Header = () => {
   return (
     <header className="bg-white/90 backdrop-blur-md px-4 py-3 shadow-2xl sticky top-0 z-50 rounded-b-[50px]">
       <div className="container mx-auto flex items-center justify-between relative">
-        {/* Logo dengan desain melengkung */}
         <div
           className="flex items-center space-x-3 cursor-pointer transform hover:scale-105 transition duration-300 bg-lightPurple/10 px-4 py-2 rounded-full"
           onClick={() => navigate('/')}
@@ -35,8 +34,6 @@ const Header = () => {
             Pawfect Shelter
           </h1>
         </div>
-
-        {/* Desktop Navigation dengan tipografi menarik */}
         <nav className="hidden md:flex space-x-6 items-center">
           {menuItems.map((item) => (
             <a
@@ -52,7 +49,6 @@ const Header = () => {
           ))}
         </nav>
 
-        {/* Authentication Buttons dengan desain melengkung */}
         <div className="flex items-center space-x-4">
           {isLoggedIn ? (
             <div className="flex items-center space-x-3">
@@ -97,8 +93,6 @@ const Header = () => {
             </div>
           )}
         </div>
-
-        {/* Mobile Menu Toggle */}
         <div className="md:hidden">
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -107,8 +101,6 @@ const Header = () => {
             {isMenuOpen ? '✖️' : '☰'}
           </button>
         </div>
-
-        {/* Mobile Menu dengan desain melengkung */}
         {isMenuOpen && (
           <div className="absolute top-full left-0 w-full bg-white shadow-2xl md:hidden rounded-b-[30px] overflow-hidden">
             <nav className="flex flex-col space-y-2 p-4">

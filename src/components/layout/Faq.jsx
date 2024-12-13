@@ -4,7 +4,7 @@ import {
   SparklesIcon, 
   QuestionMarkCircleIcon 
 } from '@heroicons/react/24/solid';
-// import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
+
 
 const faqs = [
   {
@@ -78,7 +78,6 @@ const FAQ = () => {
 
   return (
     <section className="bg-gradient-to-br from-pink-50 to-purple-100 py-20 px-6 relative overflow-hidden">
-      {/* Background Decorative Elements */}
       <div className="absolute top-0 left-0 opacity-20 animate-float">
         <svg xmlns="http://www.w3.org/2000/svg" className="w-32 h-32 text-pink-200" fill="currentColor" viewBox="0 0 24 24">
           <path d="M12 2c-5.523 0-10 4.477-10 10s4.477 10 10 10 10-4.477 10-10-4.477-10-10-10zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
@@ -135,7 +134,6 @@ const FAQ = () => {
           ))}
         </div>
 
-        {/* Tambahan Call to Action */}
         <div className="mt-12 text-center bg-white/60 backdrop-blur-sm rounded-xl p-8 max-w-2xl mx-auto shadow-md">
           <h3 className="text-2xl font-bold text-transparent bg-clip-text 
             bg-gradient-to-r from-pink-500 to-purple-600 mb-4">

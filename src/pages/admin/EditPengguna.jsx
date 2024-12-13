@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import { setEditSuccess } from '../../redux/store';
-import Swal from 'sweetalert2'; // Tambahkan SweetAlert
+import Swal from 'sweetalert2'; 
 
 const EditPengguna = () => {
   const { id } = useParams();
@@ -44,8 +44,6 @@ const EditPengguna = () => {
     try {
       await axios.put(`http://localhost:3001/api/v1/pengguna/${id}`, pengguna);
       dispatch(setEditSuccess(true));
-      
-      // Gunakan SweetAlert untuk konfirmasi
       await Swal.fire({
         icon: 'success',
         title: 'Berhasil!',
@@ -67,8 +65,6 @@ const EditPengguna = () => {
       });
     }
   };
-
-  // Loading state dengan desain lucu
   if (pengguna === null) {
     return (
       <div className="flex justify-center items-center h-screen bg-gradient-to-r from-pink-200 via-purple-200 to-blue-200">
@@ -112,7 +108,6 @@ const EditPengguna = () => {
           Edit Pengguna 🐾
         </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Input Nama */}
           <div>
             <label 
               htmlFor="nama" 
@@ -130,8 +125,6 @@ const EditPengguna = () => {
               className="w-full px-4 py-2 border border-pink-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:outline-none transition"
             />
           </div>
-
-          {/* Input Email */}
           <div>
             <label 
               htmlFor="email" 
@@ -149,8 +142,6 @@ const EditPengguna = () => {
               className="w-full px-4 py-2 border border-pink-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:outline-none transition"
             />
           </div>
-
-          {/* Input No Telepon */}
           <div>
             <label 
               htmlFor="no_telepon" 
@@ -168,9 +159,7 @@ const EditPengguna = () => {
               className="w-full px-4 py-2 border border-pink-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:outline-none transition"
             />
           </div>
-
-                    {/* Input Alamat */}
-                    <div>
+          <div>
             <label 
               htmlFor="alamat" 
               className="block text-sm font-medium text-gray-700 mb-1"
@@ -188,7 +177,6 @@ const EditPengguna = () => {
             />
           </div>
 
-          {/* Tombol Submit */}
           <div className="pt-4">
             <button
               type="submit"
@@ -215,8 +203,6 @@ const EditPengguna = () => {
             </button>
           </div>
         </form>
-
-        {/* Tombol Kembali */}
         <div className="mt-4 text-center">
           <button
             onClick={() => navigate('/tabel/pengguna')}

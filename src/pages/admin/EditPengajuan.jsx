@@ -37,7 +37,7 @@ const EditPengajuan = () => {
         `http://localhost:3001/api/v1/pengajuan/${id}`,
         pengajuan
       );
-      //   const updatedPengajuan = response.data.data;
+      
 
       if (response.data.status === 'Adopsi Created') {
         alert('Pengajuan berhasil diperbarui, dan data adopsi telah dibuat.');

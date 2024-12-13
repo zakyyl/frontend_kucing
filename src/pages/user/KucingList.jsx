@@ -51,7 +51,6 @@ const KucingList = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-100 via-purple-100 to-blue-100 py-12 px-6 sm:px-12 relative">
-      {/* Dekorasi kucing di sudut */}
       <div className="absolute top-0 left-0 opacity-20">
         <FaCat className="text-9xl text-purple-200" />
       </div>
@@ -127,14 +126,14 @@ const KucingList = () => {
                           : 'path_to_default_image.jpg'
                       }
                       alt={kucing.nama}
-                      className="w-full h-full object-contain" // Gunakan object-contain
+                      className="w-full h-full object-contain" 
                       style={{
                         objectPosition: 'center',
                         maxWidth: '100%',
                         maxHeight: '100%',
                         width: 'auto',
                         height: 'auto',
-                        objectFit: 'contain' // Pastikan gambar utuh
+                        objectFit: 'contain'
                       }}
                     />
                     <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent p-2">

@@ -11,7 +11,7 @@ const TabelKucing = () => {
   const [kucingData, setKucingData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [searchTerm, setSearchTerm] = useState(''); // State untuk pencarian
+  const [searchTerm, setSearchTerm] = useState(''); 
 
   const fetchKucingData = async () => {
     try {
@@ -70,8 +70,6 @@ const TabelKucing = () => {
             },
           }
         );
-  
-        // Log response untuk melihat hasil penghapusan
         console.log('Delete Response:', response.data);
   
         fetchKucingData();
@@ -86,13 +84,9 @@ const TabelKucing = () => {
   const handleAddKucing = () => {
     navigate('/add-kucing');
   };
-
-  // Filter data kucing berdasarkan searchTerm
   const filteredKucingData = kucingData.filter((kucing) =>
     kucing.nama.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
-  // Tampilan loading
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -106,8 +100,6 @@ const TabelKucing = () => {
       </div>
     );
   }
-
-  // Tampilan error
   if (error) {
     return (
       <div className="container mt-5">
@@ -135,8 +127,6 @@ const TabelKucing = () => {
       >
         ✨ Tambah Data Kucing ✨
       </button>
-
-      {/* Input Pencarian */}
       <div className="mb-4">
         <input
           type="text"

@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import axios from 'axios'; // Untuk request API
-import { useNavigate } from 'react-router-dom'; // Untuk navigasi
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 
 const Register = () => {
@@ -9,8 +9,8 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const [noTelepon, setNoTelepon] = useState('');
   const [alamat, setAlamat] = useState('');
-  const [error, setError] = useState(''); // Untuk menampilkan error
-  const [success, setSuccess] = useState(''); // Untuk menampilkan pesan sukses
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
@@ -30,25 +30,22 @@ const Register = () => {
         }
       );
 
-      // Jika registrasi berhasil
-      setSuccess(response.data.message); // Tampilkan pesan sukses
-      setError(''); // Hapus pesan error jika ada
+      setSuccess(response.data.message);
+      setError('');
 
-      // Arahkan pengguna ke halaman login
       setTimeout(() => {
         navigate('/login');
       }, 2000);
     } catch (err) {
-      // Tampilkan pesan error jika registrasi gagal
+
       setError(err.response?.data?.message || 'Registrasi gagal');
-      setSuccess(''); // Hapus pesan sukses jika ada
+      setSuccess('');
     }
   };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-pink-100 via-purple-200 to-blue-100 p-4">
       <div className="relative w-full max-w-md">
-        {/* Kucing lucu di sudut kanan bawah */}
         <div className="absolute -bottom-20 -right-20 w-64 h-64 transform -rotate-12">
           <img
             src="https://png.pngtree.com/png-clipart/20230405/original/pngtree-kitty-cute-cat-sticker-cartoon-clipart-png-image_9027478.png"
@@ -57,7 +54,6 @@ const Register = () => {
           />
         </div>
 
-        {/* Kartu Register */}
         <div className="bg-white/90 backdrop-blur-md p-8 rounded-3xl shadow-2xl relative z-10 border-4 border-pink-200">
           <div className="text-center mb-6">
             <h2 className="text-4xl font-['Comfortaa'] font-bold text-lightPurple flex items-center justify-center gap-3">
@@ -71,7 +67,6 @@ const Register = () => {
           </div>
 
           <form className="space-y-4" onSubmit={handleRegister}>
-            {/* Nama Input */}
             <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-700 flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-lightPurple" viewBox="0 0 20 20" fill="currentColor">
@@ -89,7 +84,6 @@ const Register = () => {
               />
             </div>
 
-            {/* Email Input */}
             <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-700 flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-lightPurple" viewBox="0 0 20 20" fill="currentColor">
@@ -108,7 +102,6 @@ const Register = () => {
               />
             </div>
 
-            {/* Password Input */}
             <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-700 flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-lightPurple" viewBox="0 0 20 20" fill="currentColor">
@@ -134,8 +127,6 @@ const Register = () => {
                 </button>
               </div>
             </div>
-
-            {/* Nomor Telepon Input */}
             <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-700 flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-lightPurple" viewBox="0 0 20 20" fill="currentColor">
@@ -154,7 +145,6 @@ const Register = () => {
               />
             </div>
 
-            {/* Alamat Input */}
             <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-700 flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-lightPurple" viewBox="0 0 20 20" fill="currentColor">
@@ -172,7 +162,6 @@ const Register = () => {
               />
             </div>
 
-            {/* Tombol Register */}
             <div className="pt-4">
               <button
                 type="submit"

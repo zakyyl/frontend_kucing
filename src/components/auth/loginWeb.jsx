@@ -4,7 +4,6 @@ import { login } from '../../redux/authSlice';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
-// import '../styles/auth.css';
 
 const LoginWeb = () => {
   const [email, setEmail] = useState('');
@@ -19,7 +18,6 @@ const LoginWeb = () => {
     e.preventDefault();
 
     try {
-      // Coba login sebagai user terlebih dahulu
       let response;
       let role = 'user';
       let endpoint = 'http://localhost:3001/api/auth/user/login';
@@ -27,7 +25,6 @@ const LoginWeb = () => {
       try {
         response = await axios.post(endpoint, { email, password });
       } catch (userLoginError) {
-        // Jika login user gagal, coba login sebagai admin
         endpoint = 'http://localhost:3001/api/auth/admin/login';
         role = 'admin';
         response = await axios.post(endpoint, { email, password });
@@ -38,26 +35,20 @@ const LoginWeb = () => {
 
       const token = response.data.token;
       localStorage.setItem('token', token);
-
-      // Decode token untuk mendapatkan ID
       const decoded = jwtDecode(token);
       const userId = decoded.id;
-
-      // Simpan role di localStorage
       localStorage.setItem('role', role);
 
-      // Dispatch ke Redux dengan token dan ID
       dispatch(
         login({
           token,
-          role, // Mengirimkan role
-          id: userId, // Mengirimkan ID pengguna
+          role,
+          id: userId, 
         })
       );
 
       console.log('Token stored:', localStorage.getItem('token'));
 
-      // Navigasi berdasarkan role
       if (role === 'admin') {
         navigate('/admin/dashboard');
       } else {
@@ -72,7 +63,6 @@ const LoginWeb = () => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-pink-100 via-purple-200 to-blue-100 p-4">
       <div className="relative w-full max-w-md">
-        {/* Kucing lucu di sudut kiri atas */}
         <div className="absolute -top-20 -left-20 w-64 h-64 transform rotate-12">
           <img
             src="https://png.pngtree.com/png-clipart/20230405/original/pngtree-kitty-cute-cat-sticker-cartoon-clipart-png-image_9027478.png"
@@ -81,7 +71,6 @@ const LoginWeb = () => {
           />
         </div>
 
-        {/* Kartu Login */}
         <div className="bg-white/90 backdrop-blur-md p-8 rounded-3xl shadow-2xl relative z-10 border-4 border-pink-200">
           <div className="text-center mb-6">
             <h2 className="text-4xl font-['Comfortaa'] font-bold text-lightPurple flex items-center justify-center gap-3">
@@ -95,7 +84,6 @@ const LoginWeb = () => {
           </div>
 
           <form className="space-y-4" onSubmit={handleLogin}>
-            {/* Email Input */}
             <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-700 flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-lightPurple" viewBox="0 0 20 20" fill="currentColor">
@@ -121,7 +109,6 @@ const LoginWeb = () => {
               </div>
             </div>
 
-            {/* Password Input */}
             <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-700 flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-lightPurple" viewBox="0 0 20 20" fill="currentColor">
@@ -154,7 +141,6 @@ const LoginWeb = () => {
               </div>
             </div>
 
-            {/* Tombol Login */}
             <div className="pt-4">
               <button
                 type="submit"
@@ -166,8 +152,11 @@ const LoginWeb = () => {
             </div>
           </form>
 
+
           {error && <p className="text-center text-red-500">{error}</p>}
           {success && <p className="text-center text-green-500">{success}</p>}
+
+
         </div>
       </div>
     </div>

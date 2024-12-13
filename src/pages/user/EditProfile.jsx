@@ -38,8 +38,6 @@ const EditProfile = () => {
                         'Content-Type': 'application/json'
                     }
                 });
-
-                // Log response untuk debugging
                 console.log('Fetch User Profile Response:', {
                     status: response.status,
                     data: response.data,
@@ -80,8 +78,6 @@ const EditProfile = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        // Konfirmasi sebelum update
         const confirmResult = await Swal.fire({
             icon: 'question',
             title: 'Konfirmasi Update Profil',
@@ -109,17 +105,12 @@ const EditProfile = () => {
                     }
                 }
             );
-
-            // Log response untuk debugging
             console.log('Update Profile Response:', {
                 status: response.status,
                 data: response.data,
                 headers: response.headers
             });
-
-            // Cek apakah update berhasil
             if (response.status === 200 || response.status === 201) {
-                // Update berhasil
                 Swal.fire({
                     icon: 'success',
                     title: 'Profil Berhasil Diperbarui',
@@ -127,10 +118,7 @@ const EditProfile = () => {
                     timer: 1500,
                     showConfirmButton: false
                 }).then(() => {
-                    // Update localStorage
                     localStorage.setItem('nama', userData.nama);
-
-                    // Update Redux state
                     dispatch(updateUser({
                         nama: userData.nama
                     }));
@@ -138,17 +126,13 @@ const EditProfile = () => {
                     navigate('/user/dashboard');
                 });
             } else {
-                // Jika status tidak sesuai
                 throw new Error('Update tidak berhasil');
             }
         } catch (error) {
-            // Log error detail
             console.error('Error updating profile:', {
                 errorResponse: error.response,
                 errorMessage: error.message
             });
-
-            // Tangani error
             Swal.fire({
                 icon: 'error',
                 title: 'Gagal Update Profil',
@@ -156,8 +140,6 @@ const EditProfile = () => {
             });
         }
     };
-
-    // Jika tidak ada token, redirect ke login
     useEffect(() => {
         if (!token) {
             navigate('/login');
