@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
@@ -8,7 +8,8 @@ const EditKucing = () => {
   const navigate = useNavigate();
   const { token } = useSelector((state) => state.auth);
 
-  const [kucing, setKucing] = useState(null);
+  // Perbaiki penggunaan useState
+  const [kucing, setKucing] = useState(null); // Tambahkan state kucing
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [formData, setFormData] = useState({
@@ -18,22 +19,30 @@ const EditKucing = () => {
     jk: '',
     kondisi: '',
     deskripsi: '',
-    foto: null
+    foto: null,
   });
-
+  useEffect(() => {
+    if (kucing) {
+      console.log('Data Kucing:', kucing);
+    }
+  }, [kucing]);
+  
   // Fetch data kucing
   useEffect(() => {
     const fetchKucing = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`http://localhost:3001/api/v1/kucing/${id}`, {
-          headers: {
-            'Authorization': `Bearer ${token}`
+        const response = await axios.get(
+          `http://localhost:3001/api/v1/kucing/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           }
-        });
-        
+        );
+
         const kucingData = response.data.data;
-        setKucing(kucingData);
+        setKucing(kucingData); // Gunakan setKucing dengan benar
         setFormData({
           nama: kucingData.nama || '',
           ras: kucingData.ras || '',
@@ -41,17 +50,18 @@ const EditKucing = () => {
           jk: kucingData.jk || '',
           kondisi: kucingData.kondisi || '',
           deskripsi: kucingData.deskripsi || '',
-          foto: null
+          foto: null,
         });
-        
+
         setError('');
       } catch (error) {
-        const errorMessage = error.response?.data?.message 
-          || error.message 
-          || 'Terjadi kesalahan saat mengambil data kucing';
-        
+        const errorMessage =
+          error.response?.data?.message ||
+          error.message ||
+          'Terjadi kesalahan saat mengambil data kucing';
+
         setError(errorMessage);
-        console.error("Error fetching kucing data:", error);
+        console.error('Error fetching kucing data:', error);
       } finally {
         setLoading(false);
       }
@@ -66,17 +76,17 @@ const EditKucing = () => {
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-    
+
     // Untuk input file, gunakan files[0]
     if (name === 'foto') {
-      setFormData(prevState => ({
+      setFormData((prevState) => ({
         ...prevState,
-        foto: files ? files[0] : null
+        foto: files ? files[0] : null,
       }));
     } else {
-      setFormData(prevState => ({
+      setFormData((prevState) => ({
         ...prevState,
-        [name]: value
+        [name]: value,
       }));
     }
   };
@@ -85,42 +95,61 @@ const EditKucing = () => {
     e.preventDefault();
     setLoading(true);
     setError('');
-  
+
     try {
       // Validasi input
-      const requiredFields = ['nama', 'ras', 'umur', 'jk', 'kondisi', 'deskripsi'];
-      const missingFields = requiredFields.filter(field => !formData[field]);
-  
+      const requiredFields = [
+        'nama',
+        'ras',
+        'umur',
+        'jk',
+        'kondisi',
+        'deskripsi',
+      ];
+      const missingFields = requiredFields.filter((field) => !formData[field]);
+
       if (missingFields.length > 0) {
-        throw new Error(`Field berikut harus diisi: ${missingFields.join(', ')}`);
+        throw new Error(
+          `Field berikut harus diisi: ${missingFields.join(', ')}`
+        );
       }
-  
+
       const formDataToSend = new FormData();
-      
+
       // Tambahkan semua field
-      Object.keys(formData).forEach(key => {
+      Object.keys(formData).forEach((key) => {
         if (formData[key] !== null && formData[key] !== undefined) {
           const value = key === 'umur' ? String(formData[key]) : formData[key];
           formDataToSend.append(key, value);
         }
       });
-  
-      const response = await axios.put(`http://localhost:3001/api/v1/kucing/${id}`, formDataToSend, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          'Authorization': `Bearer ${token}`
+
+      const response = await axios.put(
+        `http://localhost:3001/api/v1/kucing/${id}`,
+        formDataToSend,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${token}`,
+          },
         }
-      });
-  
-      if (response.data && (response.data.status === 'Updated' || response.data.status === 'success')) {
-        alert("Data kucing berhasil diperbarui");
+      );
+
+      if (
+        response.data &&
+        (response.data.status === 'Updated' ||
+          response.data.status === 'success')
+      ) {
+        alert('Data kucing berhasil diperbarui');
         navigate('/tabel/kucing');
       } else {
         throw new Error('Gagal memperbarui data kucing');
       }
-  
     } catch (error) {
-      const errorMessage = error.response?.data?.message || error.message || 'Terjadi kesalahan saat memperbarui data kucing';
+      const errorMessage =
+        error.response?.data?.message ||
+        error.message ||
+        'Terjadi kesalahan saat memperbarui data kucing';
       alert(`Gagal memperbarui data: ${errorMessage}`);
       setError(errorMessage);
     } finally {
@@ -144,7 +173,7 @@ const EditKucing = () => {
       <div className="container mt-5 text-center">
         <div className="alert alert-danger bg-red-100 text-red-800 p-4 rounded-lg">
           <p>{error}</p>
-          <button 
+          <button
             className="mt-3 px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-400"
             onClick={() => window.location.reload()}
           >
@@ -157,10 +186,21 @@ const EditKucing = () => {
 
   return (
     <div className="container mt-10 max-w-xl mx-auto p-6 bg-white shadow-lg rounded-lg space-y-6">
-      <h2 className="text-3xl font-bold text-center text-pink-600">Edit Kucing</h2>
-      <form onSubmit={handleSubmit} encType="multipart/form-data" className="space-y-6">
+      <h2 className="text-3xl font-bold text-center text-pink-600">
+        Edit Kucing
+      </h2>
+      <form
+        onSubmit={handleSubmit}
+        encType="multipart/form-data"
+        className="space-y-6"
+      >
         <div className="mb-4">
-          <label htmlFor="nama" className="block text-sm font-medium text-gray-700">Nama</label>
+          <label
+            htmlFor="nama"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Nama
+          </label>
           <input
             type="text"
             id="nama"
@@ -174,7 +214,12 @@ const EditKucing = () => {
         </div>
 
         <div className="mb-4">
-          <label htmlFor="ras" className="block text-sm font-medium text-gray-700">Ras</label>
+          <label
+            htmlFor="ras"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Ras
+          </label>
           <input
             type="text"
             id="ras"
@@ -188,7 +233,12 @@ const EditKucing = () => {
         </div>
 
         <div className="mb-4">
-          <label htmlFor="umur" className="block text-sm font-medium text-gray-700">Umur (bulan)</label>
+          <label
+            htmlFor="umur"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Umur (bulan)
+          </label>
           <input
             type="number"
             id="umur"
@@ -203,7 +253,12 @@ const EditKucing = () => {
         </div>
 
         <div className="mb-4">
-          <label htmlFor="jk" className="block text-sm font-medium text-gray-700">Jenis Kelamin</label>
+          <label
+            htmlFor="jk"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Jenis Kelamin
+          </label>
           <select
             id="jk"
             name="jk"
@@ -220,7 +275,12 @@ const EditKucing = () => {
         </div>
 
         <div className="mb-4">
-          <label htmlFor="kondisi" className="block text-sm font-medium text-gray-700">Kondisi</label>
+          <label
+            htmlFor="kondisi"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Kondisi
+          </label>
           <input
             type="text"
             id="kondisi"
@@ -234,7 +294,12 @@ const EditKucing = () => {
         </div>
 
         <div className="mb-4">
-          <label htmlFor="deskripsi" className="block text-sm font-medium text-gray-700">Deskripsi</label>
+          <label
+            htmlFor="deskripsi"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Deskripsi
+          </label>
           <textarea
             id="deskripsi"
             name="deskripsi"
@@ -247,7 +312,12 @@ const EditKucing = () => {
         </div>
 
         <div className="mb-4">
-          <label htmlFor="foto" className="block text-sm font-medium text-gray-700">Foto (Opsional)</label>
+          <label
+            htmlFor="foto"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Foto (Opsional)
+          </label>
           <input
             type="file"
             id="foto"
@@ -258,8 +328,8 @@ const EditKucing = () => {
           />
         </div>
 
-        <button 
-          type="submit" 
+        <button
+          type="submit"
           className="w-full px-4 py-3 bg-pink-500 text-white font-semibold rounded-lg shadow-md hover:bg-pink-400 transition"
           disabled={loading}
         >

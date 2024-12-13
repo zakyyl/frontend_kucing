@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../api/axiosinstance';
@@ -33,7 +33,12 @@ const AdminDashboard = () => {
         },
       };
 
-      const [kucingResponse, penggunaResponse, adopsiResponse, pengajuanResponse] = await Promise.all([
+      const [
+        kucingResponse,
+        penggunaResponse,
+        adopsiResponse,
+        pengajuanResponse,
+      ] = await Promise.all([
         axiosInstance.get('/api/v1/kucing', config),
         axiosInstance.get('/api/v1/pengguna', config),
         axiosInstance.get('/api/v1/adopsi', config),
@@ -46,7 +51,9 @@ const AdminDashboard = () => {
       setPengajuanData(pengajuanResponse.data.data || []);
     } catch (error) {
       const errorMessage =
-        error.response?.data?.message || error.message || 'Terjadi kesalahan saat mengambil data';
+        error.response?.data?.message ||
+        error.message ||
+        'Terjadi kesalahan saat mengambil data';
 
       setError(errorMessage);
       console.error('Error fetching data:', error);
@@ -96,7 +103,10 @@ const AdminDashboard = () => {
   return (
     <div
       className="admin-dashboard bg-gradient-to-r from-blue-50 to-pink-50 min-h-screen p-8"
-      style={{ backgroundImage: "url('../assets/images/kucang.png')", backgroundSize: '300px' }}
+      style={{
+        backgroundImage: "url('../assets/images/kucang.png')",
+        backgroundSize: '300px',
+      }}
     >
       {token && role === 'admin' ? (
         <>
@@ -104,38 +114,55 @@ const AdminDashboard = () => {
             🐾 Admin Dashboard 🐾
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-            
             <div
               className="card bg-purple-100 p-6 rounded-lg shadow-md cursor-pointer transform hover:scale-105 transition-all text-center"
               onClick={() => goToTabel('pengguna')}
             >
-              <div className="text-xl font-semibold text-purple-600">Data Pengguna</div>
-              <div className="text-4xl font-bold mt-4 text-gray-700">{penggunaData.length}</div>
-              <div className="text-sm text-gray-600 mt-2">Pengguna Terdaftar</div>
+              <div className="text-xl font-semibold text-purple-600">
+                Data Pengguna
+              </div>
+              <div className="text-4xl font-bold mt-4 text-gray-700">
+                {penggunaData.length}
+              </div>
+              <div className="text-sm text-gray-600 mt-2">
+                Pengguna Terdaftar
+              </div>
             </div>
             <div
               className="card bg-blue-100 p-6 rounded-lg shadow-md cursor-pointer transform hover:scale-105 transition-all text-center"
               onClick={() => goToTabel('kucing')}
             >
-              <div className="text-xl font-semibold text-blue-600">Data Kucing</div>
-              <div className="text-4xl font-bold mt-4 text-gray-700">{kucingData.length}</div>
+              <div className="text-xl font-semibold text-blue-600">
+                Data Kucing
+              </div>
+              <div className="text-4xl font-bold mt-4 text-gray-700">
+                {kucingData.length}
+              </div>
               <div className="text-sm text-gray-600 mt-2">Kucing Terdaftar</div>
             </div>
-            
+
             <div
               className="card bg-pink-100 p-6 rounded-lg shadow-md cursor-pointer transform hover:scale-105 transition-all text-center"
               onClick={() => goToTabel('pengajuan')}
             >
-              <div className="text-xl font-semibold text-pink-600">Data Pengajuan</div>
-              <div className="text-4xl font-bold mt-4 text-gray-700">{pengajuanData.length}</div>
+              <div className="text-xl font-semibold text-pink-600">
+                Data Pengajuan
+              </div>
+              <div className="text-4xl font-bold mt-4 text-gray-700">
+                {pengajuanData.length}
+              </div>
               <div className="text-sm text-gray-600 mt-2">Pengajuan Masuk</div>
             </div>
             <div
               className="card bg-yellow-100 p-6 rounded-lg shadow-md cursor-pointer transform hover:scale-105 transition-all text-center"
               onClick={() => goToTabel('adopsi')}
             >
-              <div className="text-xl font-semibold text-yellow-600">Data Adopsi</div>
-              <div className="text-4xl font-bold mt-4 text-gray-700">{adopsiData.length}</div>
+              <div className="text-xl font-semibold text-yellow-600">
+                Data Adopsi
+              </div>
+              <div className="text-4xl font-bold mt-4 text-gray-700">
+                {adopsiData.length}
+              </div>
               <div className="text-sm text-gray-600 mt-2">Proses Adopsi</div>
             </div>
           </div>

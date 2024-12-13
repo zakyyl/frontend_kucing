@@ -1,7 +1,6 @@
-import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { logout } from "../../redux/authSlice";
-import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from 'react-redux';
+import { logout } from '../../redux/authSlice';
+import { useNavigate } from 'react-router-dom';
 
 const HeaderAdmin = () => {
   const { isLoggedIn, role } = useSelector((state) => state.auth);
@@ -10,7 +9,7 @@ const HeaderAdmin = () => {
 
   const handleLogout = () => {
     dispatch(logout());
-    navigate("/");
+    navigate('/');
   };
 
   return (
@@ -19,7 +18,7 @@ const HeaderAdmin = () => {
         {/* Logo */}
         <div
           className="text-2xl font-bold text-lightPurple cursor-pointer hover:text-lightPink transition duration-300"
-          onClick={() => navigate("/admin/dashboard")}
+          onClick={() => navigate('/admin/dashboard')}
         >
           Admin Panel
         </div>
@@ -74,10 +73,8 @@ const HeaderAdmin = () => {
         <div className="flex items-center space-x-4">
           {isLoggedIn ? (
             <>
-              <span
-                className="text-sm font-medium text-gray-700 bg-cream px-3 py-1 rounded-full"
-              >
-                {role === "admin" ? "Admin" : "User"}
+              <span className="text-sm font-medium text-gray-700 bg-cream px-3 py-1 rounded-full">
+                {role === 'admin' ? 'Admin' : 'User'}
               </span>
               <button
                 onClick={handleLogout}
@@ -88,7 +85,7 @@ const HeaderAdmin = () => {
             </>
           ) : (
             <button
-              onClick={() => navigate("/login")}
+              onClick={() => navigate('/login')}
               className="px-4 py-2 bg-lightPink text-white font-medium rounded-md shadow-md hover:bg-pink-500 transition duration-300"
             >
               Login

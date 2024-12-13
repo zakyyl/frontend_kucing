@@ -15,7 +15,7 @@ export const setAuthToken = (token) => {
 await axios.post('http://localhost:3001/api/v1/kucing', formDataToSend, {
   headers: {
     'Content-Type': 'multipart/form-data',
-  }
+  },
 });
 
 export default axios;

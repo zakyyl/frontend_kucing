@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import Swal from 'sweetalert2';
 
 const AddKucing = () => {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ const AddKucing = () => {
     jk: '',
     kondisi: '',
     deskripsi: '',
-    foto: null
+    foto: null,
   });
 
   const [error, setError] = useState('');
@@ -23,14 +24,14 @@ const AddKucing = () => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value
+      [name]: value,
     });
   };
 
   const handleFileChange = (e) => {
     setFormData({
       ...formData,
-      foto: e.target.files[0]
+      foto: e.target.files[0],
     });
   };
 
@@ -39,7 +40,6 @@ const AddKucing = () => {
     setLoading(true);
     setError('');
 
-    // Validasi form
     if (!token) {
       setError('Anda harus login terlebih dahulu');
       setLoading(false);
@@ -59,46 +59,49 @@ const AddKucing = () => {
 
     try {
       const response = await axios.post(
-        'http://localhost:3001/api/v1/kucing', 
-        formDataToSend, 
+        'http://localhost:3001/api/v1/kucing',
+        formDataToSend,
         {
           headers: {
             'Content-Type': 'multipart/form-data',
-            'Authorization': `Bearer ${token}` // Tambahkan Bearer Token
-          }
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
+      console.log('Response data:', response.data);
+      Swal.fire({
+        title: 'Sukses!',
+        text: 'Data kucing berhasil ditambahkan',
+        icon: 'success',
+        confirmButtonText: 'OK',
+      });
 
-      // Tampilkan pesan sukses
-      alert('Data kucing berhasil ditambahkan');
       navigate('/admin/dashboard');
     } catch (error) {
-      // Error handling yang lebih komprehensif
-      const errorMessage = error.response?.data?.message 
-        || error.message 
-        || 'Terjadi kesalahan saat menambahkan data kucing';
-      
+      const errorMessage =
+        error.response?.data?.message ||
+        error.message ||
+        'Terjadi kesalahan saat menambahkan data kucing';
+
       setError(errorMessage);
-      console.error('Error adding kucing:', error);
     } finally {
       setLoading(false);
     }
   };
-
   return (
-    <div className="container mt-5">
-      <h2>Tambah Data Kucing</h2>
+    <div className="container mx-auto p-6 bg-pink-100 rounded-lg shadow-md max-w-2xl">
+      <h2 className="text-2xl font-bold text-center text-purple-700 mb-6">Tambah Data Kucing ✨</h2>
       {error && (
-        <div className="alert alert-danger" role="alert">
-          {error}
-        </div>
+        <div className="bg-red-200 text-red-800 p-3 mb-4 rounded-md">{error}</div>
       )}
       <form onSubmit={handleSubmit} encType="multipart/form-data">
-        <div className="mb-3">
-          <label htmlFor="nama" className="form-label">Nama</label>
+        <div className="mb-4">
+          <label htmlFor="nama" className="block text-lg font-medium text-purple-600 mb-2">
+            Nama Kucing
+          </label>
           <input
             type="text"
-            className="form-control"
+            className="w-full p-3 border border-purple-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
             id="nama"
             name="nama"
             value={formData.nama}
@@ -108,11 +111,13 @@ const AddKucing = () => {
           />
         </div>
 
-        <div className="mb-3">
-          <label htmlFor="umur" className="form-label">Umur</label>
+        <div className="mb-4">
+          <label htmlFor="umur" className="block text-lg font-medium text-purple-600 mb-2">
+            Umur (tahun)
+          </label>
           <input
             type="number"
-            className="form-control"
+            className="w-full p-3 border border-purple-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
             id="umur"
             name="umur"
             value={formData.umur}
@@ -122,11 +127,13 @@ const AddKucing = () => {
           />
         </div>
 
-        <div className="mb-3">
-          <label htmlFor="ras" className="form-label">Ras</label>
+        <div className="mb-4">
+          <label htmlFor="ras" className="block text-lg font-medium text-purple-600 mb-2">
+            Ras Kucing
+          </label>
           <input
             type="text"
-            className="form-control"
+            className="w-full p-3 border border-purple-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
             id="ras"
             name="ras"
             value={formData.ras}
@@ -136,10 +143,12 @@ const AddKucing = () => {
           />
         </div>
 
-        <div className="mb-3">
-          <label htmlFor="jk" className="form-label">Jenis Kelamin</label>
+        <div className="mb-4">
+          <label htmlFor="jk" className="block text-lg font-medium text-purple-600 mb-2">
+            Jenis Kelamin
+          </label>
           <select
-            className="form-control"
+            className="w-full p-3 border border-purple-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
             id="jk"
             name="jk"
             value={formData.jk}
@@ -153,11 +162,13 @@ const AddKucing = () => {
           </select>
         </div>
 
-        <div className="mb-3">
-          <label htmlFor="kondisi" className="form-label">Kondisi</label>
+        <div className="mb-4">
+          <label htmlFor="kondisi" className="block text-lg font-medium text-purple-600 mb-2">
+            Kondisi
+          </label>
           <input
             type="text"
-            className="form-control"
+            className="w-full p-3 border border-purple-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
             id="kondisi"
             name="kondisi"
             value={formData.kondisi}
@@ -167,13 +178,15 @@ const AddKucing = () => {
           />
         </div>
 
-        <div className="mb-3">
-          <label htmlFor="deskripsi" className="form-label">Deskripsi</label>
+        <div className="mb-4">
+          <label htmlFor="deskripsi" className="block text-lg font-medium text-purple-600 mb-2">
+            Deskripsi
+          </label>
           <textarea
-            className="form-control"
+            className="w-full p-3 border border-purple-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
             id="deskripsi"
             name="deskripsi"
-            rows="3"
+            rows="4"
             value={formData.deskripsi}
             onChange={handleChange}
             required
@@ -181,11 +194,13 @@ const AddKucing = () => {
           />
         </div>
 
-        <div className="mb-3">
-          <label htmlFor="foto" className="form-label">Foto</label>
+        <div className="mb-4">
+          <label htmlFor="foto" className="block text-lg font-medium text-purple-600 mb-2">
+            Foto
+          </label>
           <input
             type="file"
-            className="form-control"
+            className="w-full p-3 border border-purple-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
             id="foto"
             name="foto"
             onChange={handleFileChange}
@@ -194,9 +209,9 @@ const AddKucing = () => {
           />
         </div>
 
-        <button 
-          type="submit" 
-          className="btn btn-primary"
+        <button
+          type="submit"
+          className="w-full bg-purple-500 text-white p-3 rounded-lg hover:bg-purple-600 focus:ring-4 focus:ring-purple-300 transition duration-300"
           disabled={loading}
         >
           {loading ? 'Menyimpan...' : 'Simpan'}

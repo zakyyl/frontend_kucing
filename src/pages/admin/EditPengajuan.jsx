@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -10,10 +10,12 @@ const EditPengajuan = () => {
   useEffect(() => {
     const fetchPengajuan = async () => {
       try {
-        const response = await axios.get(`http://localhost:3001/api/v1/pengajuan/${id}`);
+        const response = await axios.get(
+          `http://localhost:3001/api/v1/pengajuan/${id}`
+        );
         setPengajuan(response.data.data);
       } catch (error) {
-        console.error("Error fetching pengajuan data:", error);
+        console.error('Error fetching pengajuan data:', error);
       }
     };
 
@@ -31,22 +33,27 @@ const EditPengajuan = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.put(`http://localhost:3001/api/v1/pengajuan/${id}`, pengajuan);
-    //   const updatedPengajuan = response.data.data;
+      const response = await axios.put(
+        `http://localhost:3001/api/v1/pengajuan/${id}`,
+        pengajuan
+      );
+      //   const updatedPengajuan = response.data.data;
 
-      if (response.data.status === "Adopsi Created") {
-        alert("Pengajuan berhasil diperbarui, dan data adopsi telah dibuat.");
+      if (response.data.status === 'Adopsi Created') {
+        alert('Pengajuan berhasil diperbarui, dan data adopsi telah dibuat.');
       } else {
-        alert("Pengajuan berhasil diperbarui.");
+        alert('Pengajuan berhasil diperbarui.');
       }
 
-      const allPengajuan = await axios.get('http://localhost:3001/api/v1/pengajuan');
+      const allPengajuan = await axios.get(
+        'http://localhost:3001/api/v1/pengajuan'
+      );
       const pengajuanData = allPengajuan.data.data;
 
       navigate('/tabel/pengajuan', { state: { pengajuanData } });
     } catch (error) {
-      console.error("Error updating pengajuan:", error);
-      alert("Terjadi kesalahan saat memperbarui pengajuan");
+      console.error('Error updating pengajuan:', error);
+      alert('Terjadi kesalahan saat memperbarui pengajuan');
     }
   };
 
@@ -59,7 +66,9 @@ const EditPengajuan = () => {
       <h2>Edit Pengajuan</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
-          <label htmlFor="status_pengajuan" className="form-label">Status Pengajuan</label>
+          <label htmlFor="status_pengajuan" className="form-label">
+            Status Pengajuan
+          </label>
           <select
             id="status_pengajuan"
             name="status_pengajuan"
@@ -73,7 +82,9 @@ const EditPengajuan = () => {
           </select>
         </div>
         <div className="mb-3">
-          <label htmlFor="motivasi" className="form-label">Motivasi</label>
+          <label htmlFor="motivasi" className="form-label">
+            Motivasi
+          </label>
           <textarea
             id="motivasi"
             name="motivasi"
@@ -83,7 +94,9 @@ const EditPengajuan = () => {
           />
         </div>
         <div className="mb-3">
-          <label htmlFor="kondisi_rumah" className="form-label">Kondisi Rumah</label>
+          <label htmlFor="kondisi_rumah" className="form-label">
+            Kondisi Rumah
+          </label>
           <input
             type="text"
             id="kondisi_rumah"
@@ -94,7 +107,9 @@ const EditPengajuan = () => {
           />
         </div>
         <div className="mb-3">
-          <label htmlFor="pengalaman_peliharaan" className="form-label">Pengalaman Peliharaan</label>
+          <label htmlFor="pengalaman_peliharaan" className="form-label">
+            Pengalaman Peliharaan
+          </label>
           <input
             type="text"
             id="pengalaman_peliharaan"
@@ -104,7 +119,9 @@ const EditPengajuan = () => {
             onChange={handleChange}
           />
         </div>
-        <button type="submit" className="btn btn-success">Simpan</button>
+        <button type="submit" className="btn btn-success">
+          Simpan
+        </button>
       </form>
     </div>
   );

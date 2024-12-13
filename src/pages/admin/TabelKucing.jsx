@@ -1,32 +1,33 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+import Swal from 'sweetalert2'; // Import SweetAlert
 
 const TabelKucing = () => {
-  const location = useLocation();
   const navigate = useNavigate();
   const { token } = useSelector((state) => state.auth);
 
   const [kucingData, setKucingData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [searchTerm, setSearchTerm] = useState(''); // State untuk pencarian
 
-  // Fungsi untuk mengambil data kucing
   const fetchKucingData = async () => {
     try {
       setLoading(true);
       const response = await axios.get('http://localhost:3001/api/v1/kucing', {
         headers: {
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
       setKucingData(response.data.data);
       setError('');
     } catch (error) {
-      const errorMessage = error.response?.data?.message 
-        || error.message 
-        || 'Terjadi kesalahan saat mengambil data kucing';
+      const errorMessage =
+        error.response?.data?.message ||
+        error.message ||
+        'Terjadi kesalahan saat mengambil data kucing';
 
       setError(errorMessage);
       console.error('Error fetching kucing data:', error);
@@ -35,7 +36,6 @@ const TabelKucing = () => {
     }
   };
 
-  // Ambil data saat komponen dimount
   useEffect(() => {
     if (token) {
       fetchKucingData();
@@ -49,26 +49,36 @@ const TabelKucing = () => {
   };
 
   const handleDelete = async (id) => {
-    const confirmDelete = window.confirm('Apakah Anda yakin ingin menghapus data ini?');
-    if (confirmDelete) {
+    const confirmDelete = await Swal.fire({
+      title: 'Apakah Anda yakin?',
+      text: 'Data kucing ini akan dihapus!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Ya, hapus!',
+      cancelButtonText: 'Batal',
+    });
+  
+    if (confirmDelete.isConfirmed) {
       try {
-        console.log('Attempting to delete kucing with ID:', id);
-
-        const response = await axios.delete(`http://localhost:3001/api/v1/kucing/${id}`, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-          },
-        });
-
+        const response = await axios.delete(
+          `http://localhost:3001/api/v1/kucing/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+  
+        // Log response untuk melihat hasil penghapusan
         console.log('Delete Response:', response.data);
-
-        // Refresh data setelah delete
+  
         fetchKucingData();
-
-        alert('Data kucing berhasil dihapus');
+        Swal.fire('Terhapus!', 'Data kucing berhasil dihapus.', 'success');
       } catch (error) {
         console.error('Error deleting kucing:', error);
-        alert('Terjadi kesalahan saat menghapus data kucing');
+        Swal.fire('Error!', 'Terjadi kesalahan saat menghapus data kucing.', 'error');
       }
     }
   };
@@ -77,11 +87,19 @@ const TabelKucing = () => {
     navigate('/add-kucing');
   };
 
+  // Filter data kucing berdasarkan searchTerm
+  const filteredKucingData = kucingData.filter((kucing) =>
+    kucing.nama.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   // Tampilan loading
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <div className="spinner-border animate-spin border-4 border-t-4 border-blue-500 rounded-full w-16 h-16" role="status">
+        <div
+          className="spinner-border animate-spin border-4 border-t-4 border-blue-500 rounded-full w-16 h-16"
+          role="status"
+        >
           <span className="sr-only">Loading...</span>
         </div>
         <p className="text-lg text-gray-600">Memuat data...</p>
@@ -95,7 +113,7 @@ const TabelKucing = () => {
       <div className="container mt-5">
         <div className="bg-red-500 text-white p-4 rounded-lg flex items-center justify-between">
           <p>{error}</p>
-          <button 
+          <button
             className="bg-blue-500 text-white px-4 py-2 rounded-lg"
             onClick={fetchKucingData}
           >
@@ -108,15 +126,28 @@ const TabelKucing = () => {
 
   return (
     <div className="container mx-auto p-4 mt-10">
-      <h2 className="text-4xl font-bold mb-6 text-center text-[#BFECFF]">Data Kucing 🐱</h2>
-      <button 
+      <h2 className="text-4xl font-bold mb-6 text-center text -[#BFECFF]">
+        🐱 Data Kucing 🐱
+      </h2>
+      <button
         className="bg-[#FFCCEA] text-[#2A2A2A] px-6 py-2 rounded-full mb-4 hover:bg-[#FFCCEA]/80 transition"
         onClick={handleAddKucing}
       >
         ✨ Tambah Data Kucing ✨
       </button>
-  
-      {kucingData && kucingData.length > 0 ? (
+
+      {/* Input Pencarian */}
+      <div className="mb-4">
+        <input
+          type="text"
+          placeholder="Cari berdasarkan nama kucing..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="border border-gray-300 rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
+      {filteredKucingData && filteredKucingData.length > 0 ? (
         <div className="overflow-x-auto">
           <table className="min-w-full table-auto border-collapse bg-white rounded-lg shadow-lg">
             <thead className="bg-[#BFECFF] text-[#2A2A2A]">
@@ -133,7 +164,7 @@ const TabelKucing = () => {
               </tr>
             </thead>
             <tbody>
-              {kucingData.map((kucing, index) => (
+              {filteredKucingData.map((kucing, index) => (
                 <tr key={kucing.id} className="border-t border-[#CDC1FF]">
                   <td className="px-6 py-3 text-sm">{index + 1}</td>
                   <td className="px-6 py-3 text-sm">{kucing.nama}</td>
@@ -142,14 +173,14 @@ const TabelKucing = () => {
                       <img
                         src={`http://localhost:3001/uploads/${kucing.foto}`}
                         alt={kucing.nama}
-                        className="w-20 h-20 object-cover rounded-full shadow-md"
+                        className="w-20 h-20 object-contain rounded-full shadow-md"
                       />
                     ) : (
                       'Tidak ada foto'
                     )}
                   </td>
                   <td className="px-6 py-3 text-sm">{kucing.ras}</td>
-                  <td className="px-6 py-3 text-sm">{kucing.umur} bulan</td>
+                  <td className="px-6 py-3 text-sm">{kucing.umur} tahun</td>
                   <td className="px-6 py-3 text-sm">{kucing.jk}</td>
                   <td className="px-6 py-3 text-sm">{kucing.kondisi}</td>
                   <td className="px-6 py-3 text-sm">{kucing.deskripsi}</td>
@@ -179,7 +210,6 @@ const TabelKucing = () => {
       )}
     </div>
   );
-  
 };
 
 export default TabelKucing;
