@@ -1,7 +1,10 @@
-import { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
+import axiosInstance from '../../api/axiosinstance';
+
 const TabelPengajuan = () => {
   const location = useLocation();
   const { pengajuanData: initialData } = location.state || {};
@@ -9,8 +12,37 @@ const TabelPengajuan = () => {
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [expandedRow, setExpandedRow] = useState(null);
   const [filterStatus, setFilterStatus] = useState('Semua');
+  const navigate = useNavigate();
+  const { token, role } = useSelector((state) => state.auth);
 
+  useEffect(() => {
+    if (!token || role !== 'admin') {
+      navigate('/login');
+      return;
+    }
 
+    if (!location.state?.pengajuanData) {
+      fetchPengajuanData();
+    } else {
+
+      setPengajuanData(location.state?.pengajuanData);
+    }
+  }, [token, role, location.state]);
+
+  const fetchPengajuanData = async () => {
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const response = await axiosInstance.get('/api/v1/pengajuan', config);
+      setPengajuanData(response.data.data || []);
+    } catch (err) {
+      console.error('Gagal memuat data pengajuan', err);
+    }
+  };
 
   const filteredAndSortedData = [...pengajuanData]
     .sort((a, b) => new Date(b.tanggal_pengajuan) - new Date(a.tanggal_pengajuan))
@@ -42,26 +74,25 @@ const TabelPengajuan = () => {
         });
 
         if (!result.isConfirmed) {
-          return; // Batalkan jika pengguna memilih "Batal"
+          return; 
         }
       }
 
-      // Kirim permintaan untuk memperbarui status ke server
       await axios.put(`http://localhost:3001/api/v1/pengajuan/${id}`, {
         status_pengajuan: newStatus,
       });
 
-      // Perbarui status di tabel
+
       const updatedPengajuan = pengajuanData.map((pengajuan) =>
         pengajuan.id_pengajuan === id
           ? { ...pengajuan, status_pengajuan: newStatus }
           : pengajuan
       );
 
-      setPengajuanData(updatedPengajuan); // Update data state di tabel
-      setActiveDropdown(null); // Tutup dropdown setelah selesai
+      setPengajuanData(updatedPengajuan); 
+      setActiveDropdown(null); 
 
-      // Tampilkan notifikasi sukses
+      
       Swal.fire({
         title: 'Berhasil!',
         text: 'Status pengajuan telah diperbarui.',
@@ -71,7 +102,6 @@ const TabelPengajuan = () => {
     } catch (error) {
       console.error('Error updating status:', error);
 
-      // Tampilkan notifikasi error
       Swal.fire({
         title: 'Error!',
         text: 'Terjadi kesalahan saat memperbarui status',
@@ -81,13 +111,14 @@ const TabelPengajuan = () => {
     }
   };
 
+
   return (
     <div className="container mx-auto mt-8 px-4">
       <h2 className="text-2xl font-semibold text-center mb-6">
         Data Pengajuan
       </h2>
 
-      {/* Filter Status */}
+      
       <div className="flex justify-center mb-6">
         <div className="bg-white shadow rounded-lg p-2 flex gap-2">
           {['Semua', ...statusOptions.map(status => status.value)].map((status) => (

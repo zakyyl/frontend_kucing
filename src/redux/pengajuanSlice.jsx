@@ -29,6 +29,30 @@ export const fetchPengajuanByUserId = createAsyncThunk(
   }
 );
 
+
+export const deletePengajuan = createAsyncThunk(
+  "pengajuan/deletePengajuan",
+  async ({ idPengajuan, token }, { rejectWithValue }) => {
+    try {
+      const response = await fetch(`http://localhost:3001/api/v1/pengajuan/${idPengajuan}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) throw new Error("Gagal menghapus pengajuan.");
+
+      const data = await response.json();
+      return { idPengajuan, message: data.message };
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+
 const pengajuanSlice = createSlice({
   name: 'pengajuan',
   initialState: {
@@ -52,5 +76,6 @@ const pengajuanSlice = createSlice({
       });
   },
 });
+
 
 export default pengajuanSlice.reducer;

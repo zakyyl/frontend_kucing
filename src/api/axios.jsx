@@ -1,21 +1,24 @@
 import axios from 'axios';
 
-// Base URL
-axios.defaults.baseURL = 'http://localhost:3001';
+const BASE_URL = process.env.REACT_APP_BASE_URL || 'http://localhost:3001';
+
+axios.defaults.baseURL = BASE_URL;
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 
-// Tambahkan token jika tersedia
 export const setAuthToken = (token) => {
   if (token) {
+    localStorage.setItem('token', token);
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
   } else {
+    localStorage.removeItem('token');
     delete axios.defaults.headers.common['Authorization'];
   }
 };
-await axios.post('http://localhost:3001/api/v1/kucing', formDataToSend, {
-  headers: {
-    'Content-Type': 'multipart/form-data',
-  },
-});
+
+
+const token = localStorage.getItem('token');
+if (token) {
+  setAuthToken(token);
+}
 
 export default axios;

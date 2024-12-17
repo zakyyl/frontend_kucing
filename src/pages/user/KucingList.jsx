@@ -7,6 +7,7 @@ const KucingList = () => {
   const [kucings, setKucings] = useState([]);
   const [filterRas, setFilterRas] = useState('');
   const [filterJk, setFilterJk] = useState('');
+  const [searchTerm, setSearchTerm] = useState(''); 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -46,7 +47,8 @@ const KucingList = () => {
   const filteredKucings = kucings.filter((kucing) => {
     const matchesRas = filterRas ? kucing.ras === filterRas : true;
     const matchesJk = filterJk ? kucing.jk === filterJk : true;
-    return matchesRas && matchesJk;
+    const matchesSearch = kucing.nama.toLowerCase().includes(searchTerm.toLowerCase()); 
+    return matchesRas && matchesJk && matchesSearch;
   });
 
   return (
@@ -63,6 +65,17 @@ const KucingList = () => {
         Find Your Cat 🐱
       </h1>
 
+      
+      <div className="flex justify-center mb-4">
+        <input
+          type="text"
+          placeholder="nama kucing..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="pl-4 pr-4 py-2 border-2 border-pink-300 rounded-full bg-white/80 text-gray-700 shadow-md focus:outline-none focus:ring-2 focus:ring-pink-300 transition"
+        />
+      </div>
+
       <div className="flex justify-center space-x-4 mb-8">
         <div className="relative">
           <select
@@ -73,7 +86,7 @@ const KucingList = () => {
             <option value="">Semua Ras</option>
             {[...new Set(kucings.map((kucing) => kucing.ras))].map((ras) => (
               <option key={ras} value={ras}>
-                {ras}
+                { ras}
               </option>
             ))}
           </select>

@@ -1,8 +1,76 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import axiosInstance from '../../api/axiosinstance';
 
 const TabelAdopsi = () => {
   const location = useLocation();
-  const { adopsiData } = location.state || {};
+  const navigate = useNavigate();
+  const { token, role } = useSelector((state) => state.auth);
+  const [adopsiData, setAdopsiData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (!token || role !== 'admin') {
+      navigate('/login');
+      return;
+    }
+    console.log('Received Location State:', location.state);
+
+    
+    if (!location.state?.adopsiData) {
+      fetchAdopsiData();
+    } else {
+      
+      setAdopsiData(location.state.adopsiData);
+      setLoading(false);
+    }
+  }, [token, role, location.state]);
+
+  const fetchAdopsiData = async () => {
+    try {
+      setLoading(true);
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const response = await axiosInstance.get('/api/v1/adopsi', config);
+      
+      console.log('Fetched Adopsi Data:', response.data.data);
+      
+      setAdopsiData(response.data.data || []);
+      setLoading(false);
+    } catch (err) {
+      console.error('Error fetching adopsi data:', err);
+      setError('Gagal memuat data adopsi');
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-pink-500"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-center text-red-500 mt-10">
+        {error}
+        <button 
+          onClick={fetchAdopsiData} 
+          className="mt-4 bg-pink-500 text-white px-4 py-2 rounded"
+        >
+          Coba Lagi
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto px-4 py-8">

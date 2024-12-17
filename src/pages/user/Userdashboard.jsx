@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { fetchPengajuanByUserId } from '../../redux/pengajuanSlice';
-import catDashboard from '../../assets/images/pawfet.png'; 
-import catWaving from '../../assets/images/cat-waving.gif'; 
+import catDashboard from '../../assets/images/pawfet.png';
+import catWaving from '../../assets/images/cat-waving.gif';
+import Swal from "sweetalert2";
 
 const UserDashboard = () => {
   const dispatch = useDispatch();
@@ -44,6 +45,55 @@ const UserDashboard = () => {
       });
     }
   }, [token, role, id, dispatch, navigate]);
+  const handleDelete = (idPengajuan) => {
+    Swal.fire({
+      title: "Apakah kamu yakin?",
+      text: "Data ini akan dihapus secara permanen!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Ya, hapus!",
+      cancelButtonText: "Batal",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetch(`http://localhost:3001/api/v1/pengajuan/${idPengajuan}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`, 
+          },
+        })
+          .then((response) => {
+            console.log("Delete response:", response);
+            if (!response.ok) {
+              throw new Error("Gagal menghapus pengajuan.");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            console.log("Delete success:", data); 
+            Swal.fire({
+              title: "Terhapus!",
+              text: data.message,
+              icon: "success",
+            });
+            setSelectedPengajuan(null);
+            dispatch(fetchPengajuanByUserId(id));
+          })
+          .catch((error) => {
+            console.error("Error saat menghapus:", error); 
+            Swal.fire({
+              title: "Gagal!",
+              text: "Terjadi kesalahan saat menghapus pengajuan.",
+              icon: "error",
+            });
+          });
+
+      }
+    });
+  };
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-100 via-purple-100 to-blue-100 p-6">
@@ -219,13 +269,35 @@ const UserDashboard = () => {
                     </p>
                   </div>
 
+                  {/* Detail Pengajuan */}
                   <div className="bg-blue-50 rounded-xl p-4">
-                    <p><strong>Tanggal Pengajuan:</strong> {new Date(selectedPengajuan.createdAt).toLocaleDateString()}</p>
-                    <p><strong>Alasan Adopsi:</strong> {selectedPengajuan.motivasi || 'Tidak ada keterangan'}</p>
+                    <p>
+                      <strong>Tanggal Pengajuan:</strong>{' '}
+                      {new Date(selectedPengajuan.createdAt).toLocaleDateString()}
+                    </p>
+                    <p>
+                      <strong>Alasan Adopsi:</strong>{' '}
+                      {selectedPengajuan.motivasi || 'Tidak ada keterangan'}
+                    </p>
                   </div>
+
+                  {/* Tombol Delete jika Status Pending */}
+                  {selectedPengajuan.status_pengajuan === 'Pending' && (
+                    <div className="flex justify-end mt-4">
+                      <button
+                        onClick={() => handleDelete(selectedPengajuan.id_pengajuan)}
+                        className="bg-red-400 text-white px-4 py-2 rounded-full hover:bg-red-600 transition-colors"
+                      >
+                        Batalkan Pengajuan
+                      </button>
+                    </div>
+                  )}
                 </div>
+
+
               </div>
             </div>
+
           )}
         </div>
       </div>

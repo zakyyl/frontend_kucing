@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
-import Swal from 'sweetalert2'; // Import SweetAlert
+import Swal from 'sweetalert2'; 
 
 const TabelKucing = () => {
   const navigate = useNavigate();
@@ -11,7 +11,7 @@ const TabelKucing = () => {
   const [kucingData, setKucingData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [searchTerm, setSearchTerm] = useState(''); 
+  const [searchTerm, setSearchTerm] = useState('');
 
   const fetchKucingData = async () => {
     try {
@@ -21,7 +21,10 @@ const TabelKucing = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      setKucingData(response.data.data);
+      const sortedKucingData = response.data.data.sort((a, b) => {
+        return new Date(b.createdAt) - new Date(a.createdAt); 
+      });
+      setKucingData(sortedKucingData);
       setError('');
     } catch (error) {
       const errorMessage =
@@ -35,6 +38,7 @@ const TabelKucing = () => {
       setLoading(false);
     }
   };
+
 
   useEffect(() => {
     if (token) {
@@ -59,7 +63,7 @@ const TabelKucing = () => {
       confirmButtonText: 'Ya, hapus!',
       cancelButtonText: 'Batal',
     });
-  
+
     if (confirmDelete.isConfirmed) {
       try {
         const response = await axios.delete(
@@ -71,7 +75,7 @@ const TabelKucing = () => {
           }
         );
         console.log('Delete Response:', response.data);
-  
+
         fetchKucingData();
         Swal.fire('Terhapus!', 'Data kucing berhasil dihapus.', 'success');
       } catch (error) {

@@ -1,135 +1,159 @@
-import { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
 const TabelPengguna = () => {
-  const location = useLocation();
+
   const navigate = useNavigate();
-  const { token } = useSelector((state) => state.auth); 
-  const { penggunaData: initialData } = location.state || {};
-  const [penggunaData, setPenggunaData] = useState(initialData || []);
+  const { token } = useSelector((state) => state.auth);
+  const [penggunaData, setPenggunaData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
 
-  const editSuccess = useSelector((state) => state.editSuccess);
+  const fetchPenggunaData = async () => {
+    try {
+      const response = await axios.get('http://localhost:3001/api/v1/pengguna', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setPenggunaData(response.data.data);
+      setError('');
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.message ||
+        error.message ||
+        'Terjadi kesalahan saat mengambil data pengguna';
+      setError(errorMessage);
+      console.error('Error fetching pengguna data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (token) {
+      fetchPenggunaData();
+    } else {
+      navigate('/login');
+    }
+  }, [token, navigate]);
 
   const handleEdit = (id) => {
     navigate(`/edit-pengguna/${id}`);
   };
 
   const handleDelete = async (id) => {
-    const result = await Swal.fire({
+    const confirmDelete = await Swal.fire({
       title: 'Apakah Anda yakin?',
-      text: 'Data pengguna akan dihapus permanen!',
+      text: 'Data pengguna ini akan dihapus!',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#d33',
       cancelButtonColor: '#3085d6',
       confirmButtonText: 'Ya, hapus!',
-      cancelButtonText: 'Batal'
+      cancelButtonText: 'Batal',
     });
 
-    if (result.isConfirmed) {
+    if (confirmDelete.isConfirmed) {
       try {
-        const response = await axios.delete(
-          `http://localhost:3001/api/v1/pengguna/${id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}` 
-            }
-          }
-        );
-        console.log('Delete Response:', response);
+        await axios.delete(`http://localhost:3001/api/v1/pengguna/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setPenggunaData(penggunaData.filter((pengguna) => pengguna.id !== id));
-        Swal.fire(
-          'Terhapus!',
-          'Data pengguna berhasil dihapus.',
-          'success'
-        );
+        Swal.fire('Terhapus!', 'Data pengguna berhasil dihapus.', 'success');
       } catch (error) {
-        console.error('Error deleting pengguna:', error.response?.data || error.message);
-        Swal.fire(
-          'Gagal!',
-          error.response?.data?.message || 'Terjadi kesalahan saat menghapus data pengguna.',
-          'error'
-        );
+        console.error('Error deleting pengguna:', error);
+        Swal.fire('Error!', 'Terjadi kesalahan saat menghapus data pengguna.', 'error');
       }
     }
   };
+
   const filteredPenggunaData = penggunaData.filter((pengguna) =>
     pengguna.nama.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div
+          className="spinner-border animate-spin border-4 border-t-4 border-blue-500 rounded-full w-16 h-16"
+          role="status"
+        >
+          <span className="sr-only">Loading...</span>
+        </div>
+        <p className="text-lg text-gray-600">Memuat data...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="container mt-5">
+        <div className="bg-red-500 text-white p-4 rounded-lg flex items-center justify-between">
+          <p>{error}</p>
+          <button
+            className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+            onClick={fetchPenggunaData}
+          >
+            Coba Lagi
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h2 className="text-3xl font-bold text-center text-pink-500 mb-6">
+    <div className="container mx-auto p-6 mt-10">
+      <h2 className="text-4xl font-extrabold mb-6 text-center text-[#BFECFF]">
         👤 Data Pengguna 👤
       </h2>
-      <div className="mb-4">
+
+      <div className="mb-6 flex justify-center">
         <input
           type="text"
           placeholder="Cari berdasarkan nama pengguna..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="border border-gray-300 rounded-lg p-3 w-1/2 md:w-1/3 lg:w-1/4 focus:outline-none focus:ring-2 focus:ring-[#BFECFF] transition duration-300"
         />
       </div>
 
-      {editSuccess && (
-        <div className="alert alert-success bg-green-100 text-green-700 p-4 rounded-lg mb-4">
-          <span className="font-semibold">
-            Data pengguna berhasil diperbarui!
-          </span>
-        </div>
-      )}
-
       {filteredPenggunaData && filteredPenggunaData.length > 0 ? (
-        <div className="overflow-x-auto rounded-lg shadow-lg">
-          <table className="table-auto w-full bg-white rounded-lg border border-gray-200 shadow-md">
-            <thead className="bg-[#BFECFF] text-[#2A2A2A]">
+        <div className="overflow-x-auto">
+          <table className="min-w-full table-auto bg-white rounded-lg shadow-lg border border-[#EFEFEF]">
+            <thead className="bg-[#BFECFF] text-[#2A2A2A] border-b-2 border-[#CDC1FF]">
               <tr>
-                <th className="px-6 py-3 text-sm font-semibold text-left text-black-600">
-                  Nama
-                </th>
-                <th className="px-6 py-3 text-sm font-semibold text-left text-black-600">
-                  Email
-                </th>
-                <th className="px-6 py-3 text-sm font-semibold text-left text-black-600">
-                  No Telepon
-                </th>
-                <th className="px-6 py-3 text-sm font-semibold text-left text-black-600">
-                  Alamat
-                </th>
-                <th className="px-6 py-3 text-sm font-semibold text-center text-black-600">
-                  Aksi
-                </th>
+                <th className="px-6 py-4 text-lg font-semibold text-left">No</th>
+                <th className="px-6 py-4 text-lg font-semibold text-left">Nama</th>
+                <th className="px-6 py-4 text-lg font-semibold text-left">Email</th>
+                <th className="px-6 py-4 text-lg font-semibold text-left">No Telepon</th>
+                <th className="px-6 py-4 text-lg font-semibold text-left">Alamat</th>
+                <th className="px-6 py-4 text-lg font-semibold text-left">Aksi</th>
               </tr>
             </thead>
-            <tbody>
-              {filteredPenggunaData.map((pengguna) => (
-                <tr key={pengguna.id} className="border-t border-gray-200">
-                  <td className="px-6 py-4 text-sm text-gray-800">
-                    {pengguna.nama}
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-800">
-                    {pengguna.email}
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-800">
-                    {pengguna.no_telepon}
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-800">
-                    {pengguna.alamat}
-                  </td>
-                  <td className="px-6 py-4 text-center">
+            <tbody className="text-gray-700">
+              {filteredPenggunaData.map((pengguna, index) => (
+                <tr key={pengguna.id} className="border-t border-[#EFEFEF] hover:bg-[#F9F9F9] transition duration-200">
+                  <td className="px-6 py-3 text-sm">{index + 1}</td>
+                  <td className="px-6 py-3 text-sm">{pengguna.nama}</td>
+                  <td className="px-6 py-3 text-sm">{pengguna.email}</td>
+                  <td className="px-6 py-3 text-sm">{pengguna.no_telepon}</td>
+                  <td className="px-6 py-3 text-sm">{pengguna.alamat}</td>
+                  <td className="px-6 py-3 text-sm flex gap-3 items-center">
                     <button
-                      className="bg-[#CDC1FF] text-[#2A2A2A] px-4 py-2 rounded-full hover:bg-[#CDC1FF]/80 transition mr-2"
+                      className="bg-[#CDC1FF] text-[#2A2A2A] px-4 py-2 rounded-full hover:bg-[#CDC1FF]/80 transition duration-300 shadow-md"
                       onClick={() => handleEdit(pengguna.id)}
                     >
                       ✏️ Edit
                     </button>
                     <button
-                      className="bg-[#FFCCEA] text-[#2A2A2A] px-4 py-2 rounded-full hover:bg-[#FFCCEA]/80 transition"
+                      className="bg-[#FFCCEA] text-[#2A2A2A] px-4 py-2 rounded-full hover:bg-[#FFCCEA]/80 transition duration-300 shadow-md"
                       onClick={() => handleDelete(pengguna.id)}
                     >
                       🗑️ Hapus
@@ -141,12 +165,13 @@ const TabelPengguna = () => {
           </table>
         </div>
       ) : (
-        <p className="text-center text-gray-600 mt-6">
-          Tidak ada data tersedia
-        </p>
+        <div className="text-center mt-6 text-gray-600 text-lg">
+          Tidak ada data pengguna tersedia. 🐾
+        </div>
       )}
     </div>
   );
+
 };
 
 export default TabelPengguna;
