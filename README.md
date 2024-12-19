@@ -29,25 +29,23 @@ Anda dapat mengakses aplikasi yang telah dideploy di:
 1. Pastikan Anda memiliki Node.js dan npm terinstal di komputer Anda.  
 2. Klon repositori ini:  
 
-   ```bash
-   git clone https://github.com/zakyyl/frontend_kucing.git
+```bash
+git clone https://github.com/zakyyl/frontend_kucing.git
+```
 Masuk ke direktori proyek:
-
-bash
-
+```bash
 cd frontend_kucing
+```
 Instal dependensi:
-
-bash
-
+```bash
 npm install
+```
 Jalankan aplikasi:
-
-bash
-
+```bash
 npm start
+```
 Buka http://localhost:3000 di browser Anda untuk melihat aplikasi.
 
 
-Kontak
-Dibuat oleh Zaky Ramadhakara. Jika Anda memiliki pertanyaan atau saran, silakan hubungi saya melalui GitHub atau email Anda.
+Contact
+Dibuat oleh Zaky Ramadhakara. Jika Anda memiliki pertanyaan atau saran, silakan hubungi saya melalui GitHub atau email saya zakyramadhakara@gmail.com
