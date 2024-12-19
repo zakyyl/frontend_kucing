@@ -1,4 +1,4 @@
-# Frontend Kucing  
+# PAWFECT SHELTER
 
 Frontend Kucing adalah aplikasi web shelter kucing yang dapat mengadopsi kucing melalui pengajuan dan menampilkan berbagai informasi tentang kucing, termasuk ras, karakteristik, dan fakta menarik lainnya.  
 
