@@ -47,5 +47,4 @@ npm start
 Buka http://localhost:3000 di browser Anda untuk melihat aplikasi.
 
 
-Contact
-Dibuat oleh Zaky Ramadhakara. Jika Anda memiliki pertanyaan atau saran, silakan hubungi saya melalui GitHub atau email saya zakyramadhakara@gmail.com
+Jika Anda memiliki pertanyaan atau saran, silakan hubungi saya melalui GitHub atau email saya zakyramadhakara@gmail.com
