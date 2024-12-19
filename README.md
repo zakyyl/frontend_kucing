@@ -11,9 +11,9 @@ Anda dapat mengakses aplikasi yang telah dideploy di:
 [https://zakyyl.github.io/frontend_kucing/](https://zakyyl.github.io/frontend_kucing/)  
 
 ## Fitur  
-
+- Pengajuan adopsi kucing
 - Menampilkan daftar berbagai ras kucing.  
-- Informasi detail tentang setiap ras, termasuk asal, temperamen, dan deskripsi fisik.  
+- Informasi detail tentang setiap ras, termasuk umur, kondisi, dan deskripsi fisik.  
 - Pencarian ras kucing berdasarkan nama.  
 - Antarmuka pengguna yang responsif dan intuitif.  
 
