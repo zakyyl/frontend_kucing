@@ -1,70 +1,72 @@
-# Getting Started with Create React App
+# Frontend Kucing
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Frontend Kucing adalah aplikasi web yang menampilkan berbagai informasi tentang kucing, termasuk ras, karakteristik, dan fakta menarik lainnya.
 
-## Available Scripts
+## Demo Langsung
 
-In the project directory, you can run:
+Anda dapat mengakses aplikasi yang telah dideploy di: [https://zakyyl.github.io/frontend_kucing/](https://zakyyl.github.io/frontend_kucing/)
 
-### `npm start`
+## Fitur
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- Menampilkan daftar berbagai ras kucing.
+- Informasi detail tentang setiap ras, termasuk asal, temperamen, dan deskripsi fisik.
+- Pencarian ras kucing berdasarkan nama.
+- Antarmuka pengguna yang responsif dan intuitif.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Teknologi yang Digunakan
 
-### `npm test`
+- **React**: Library JavaScript untuk membangun antarmuka pengguna.
+- **Axios**: Library untuk melakukan permintaan HTTP ke API.
+- **React Router**: Untuk navigasi antar halaman dalam aplikasi.
+- **Bootstrap**: Framework CSS untuk desain responsif.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Instalasi
 
-### `npm run build`
+1. Pastikan Anda memiliki Node.js dan npm terinstal di komputer Anda.
+2. Klon repositori ini:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+   ```bash
+   git clone https://github.com/zakyyl/frontend_kucing.git
+Masuk ke direktori proyek:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+bash
+Copy code
+cd frontend_kucing
+Instal dependensi:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+bash
+Copy code
+npm install
+Jalankan aplikasi:
 
-### `npm run eject`
+bash
+Copy code
+npm start
+Buka http://localhost:3000 di browser Anda untuk melihat aplikasi.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Struktur Proyek
+Berikut adalah struktur direktori utama dari proyek ini:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+java
+Copy code
+frontend_kucing/
+├── public/
+│   ├── index.html
+│   └── ...
+├── src/
+│   ├── components/
+│   │   ├── CatList.js
+│   │   ├── CatDetail.js
+│   │   └── ...
+│   ├── App.js
+│   ├── index.js
+│   └── ...
+├── package.json
+└── README.md
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Lisensi
+Proyek ini dilisensikan di bawah MIT License.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Kontak
+Dibuat oleh Zaky Ramadhakara. Jika Anda memiliki pertanyaan atau saran, silakan hubungi saya melalui GitHub atau email Anda.
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
